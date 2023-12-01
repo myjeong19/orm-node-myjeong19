@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!-- HTML5를 브라우저에게 알려줌  -->
+<!-- HTML5는 5대 브라우저가, 합의된 최초의 표준화된 버전 -->
+<!-- HTML5에서 위배되는 것을 우회하기 위해 Axtive X를 사용한다. -->
+<!-- HTML5와 HTML4는 완전히 다르다.  -->
+<!-- \!DOCTYPE html은 최초 합의된 버전인 HTML5를 의미한다. -->
+<html>
+  <head>
+    <title>ECMAScript 2015 let/const 알아보기</title>
+    <!-- 웹 브라우저 혹은 검색엔진을 위한 영역 -->
+  </head>
+  <body>
+    <!-- 사용자를 위한 영역 -->
+    <h1>let const 학습하기</h1>
+    <script>
+      //전통적인 JS 변수 선언 방식 var
+      var userName = '정민영';
+      var age = 25;
+      var price = 5000;
+      var isMaile = true;
+
+      // 기본 배송비: 절대 변경되면 안되는 값
+      var baseDelyFee = 3000;
+      console.log('기봉 배송비', baseDelyFee);
+
+      // var 변수 선언 방식은 상수개념을 지원하지 않아, 언제든지 변경이 가능한 값이다.
+      baseDelyFee = 13000;
+      console.log('기봉 배송비', baseDelyFee);
+
+      // ECMAScript2015 문법에 추가된 상수를 사용해보자
+      const newBaseDelyFee = 5000;
+      console.log('상수', newBaseDelyFee);
+
+      // 상수 값을 변경할 시, 에러가 발생한다.
+      // newBaseDelyFee = 10000;
+
+      // 총 결제 금액 초기 값 할당
+      // 재할당이 가능하다.
+      let totalPayPrice = 0;
+
+      console.log('총 결제 금액', totalPayPrice, newBaseDelyFee);
+
+      // let 재할당
+      totalPayPrice = 1;
+      console.log('총 결제 금액', totalPayPrice);
+
+      // var의 두가지 문제
+      // 1. 상수 개념이 없음 => 재할당이 가능함
+      // 2. 블록 스코프 개념이 없음 => 블록 범위 밖에서 언제든지 값 변경이 가능함
+      //    => 이러한 선언 방식은 다양한 문제를 초래했다.
+
+      // 총 결제 금액에 기본 배송비 추가
+      totalPayPrice += newBaseDelyFee;
+
+      // 총 결제 금액에 상품 기본가격 추가
+      totalPayPrice += price;
+      console.log('결제 금액', totalPayPrice);
+
+      // 가정문을 통한 블록 스코프 정의하기
+      if (isMaile) {
+        var msg = '남성입니다.';
+        // 프로그래밍적으로 특정 범위 {} 에서, 선언된 변수나 상수는 해당 범위 내에서만 사용되어야한다
+        console.log('현재 사용자 성별: 가정문 내에서의 값', msg);
+      }
+
+      msg = '여성입니다.';
+      console.log(msg);
+
+      // var를 개선하기 위해 let, const는 블록 스코프를 지원하며, 위배시 에러를 발생시킨다.
+      const region = '제주도';
+
+      if (region === '제주도') {
+        const addDelyFee = 2000;
+        let addMsg = '도서 배송비 추가';
+        console.log(addMsg);
+        totalPayPrice += addDelyFee;
+        console.log(
+          'if블록 스코프내에서 선언된 변수/함수는 그 안에서만 사용 가능하다.',
+          addDelyFee,
+          totalPayPrice
+        );
+      }
+
+      // 특정 블록 스코프 내에서 선언된 변수는 외부에서 사용시, 에러가 발생한다.
+      //    => 그 안에서만사용이 가능하다.
+      // console.log('if 구문내에서 선언된 메시지', addMsg);
+      // console.log('if 구문내 선언된 도서 배송비', addDelyFee);
+    </script>
+  </body>
+</html>
