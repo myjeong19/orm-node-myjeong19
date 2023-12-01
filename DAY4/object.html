@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JS 객체/정의 사용하기</title>
+  </head>
+  <body>
+    <h1>JS 객체 정의 사용하기</h1>
+    <script>
+      let name = '정민영';
+      let age = '25';
+
+      // JS는 class를 지원하지만 {}를 이용해 손쉽게 객체를 정의할 수 있다.
+      // 속성은 특성을 기능은 함수로 정의한다.
+      const user = {
+        name,
+        age,
+        address: '서울 성동구',
+        telephone: '010-3957-3540',
+        hello: function () {
+          return 'Hello';
+        },
+      };
+
+      console.log('사용자 자바스크립트 객체 출력', user);
+
+      const noteBook = {
+        productId: '1',
+        productName: '맥북 M1 에어 13',
+        price: '155000',
+        brand: '애플',
+      };
+
+      console.log('노트북 정보:', noteBook);
+      noteBook.price = 5000;
+      console.log('노트북 정보:', noteBook);
+
+      // 객체의 동적 속성 생성 기능 활용하기
+
+      // 노트북의 재고량 속성을 동적 속성 정의 방식으로 신규 속성 추가
+      noteBook['stock'] = 100;
+
+      let asCenter = '광진';
+      noteBook[asCenter + '성동 지점'] = 20;
+      console.log('노트북 정보:', noteBook);
+
+      // 객체의 동적속성 기능이 가장 파워풀한 경우
+      // 데이터의 구조를 동적으로 정의할 때 유용하다.
+    </script>
+  </body>
+</html>

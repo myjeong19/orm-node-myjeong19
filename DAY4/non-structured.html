@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>비구조화 할당</title>
+  </head>
+  <body>
+    <h1>배열과 객체의 비구조화 할당에 대해서...</h1>
+    <script>
+      // 비구조화 할당 문법 사용법
+      // - 배열이나 객체로부터 배열 내 값이나, 객체 속성들의 값을 빠르게 변수,상수에 할당 가능
+      // - 구조화 되지 않은 형식으로 배열내의 값들이나 객체내의 속성 및 함수를 일괄 선언 및 값으로 할당가능
+
+      // 전통적인 구조화된 배열과 객체에서 값을 추출하는 방법
+      const array = [1, 2, 3, 4, 5];
+
+      // 구조화된 배열 값을 추출해 변수에 할당하는 전통적인 방법
+      const numOne = array[0];
+      const numTwo = array[1];
+      console.log('배열에서 추출한 값 출력:', numOne, numTwo);
+
+      // 비구조화 할당방식으로 상수를 선언하고 값을 할당
+      const [one, two] = array;
+      console.log('비구조화 할당 방식의 상수 출력1:', one);
+
+      // 비구조화 할당 후, 나머지 값들 배열로 지정
+      const [numberOne, ...numbers] = array;
+      console.log('비구조화 할당 방식의 상수 출력2', numberOne, numbers);
+
+      const [num1, num2, num3, num4, num5, num6 = 6] = array;
+      console.log(
+        '비구조화 할당 방식의 상수 출력3',
+        num1,
+        num2,
+        num3,
+        num4,
+        num5,
+        num6
+      );
+
+      // 객체의 비구조화 할당
+      const techTrend = {
+        front: 'React.js',
+        backend: 'Node',
+        server: 'Linux',
+        rdbms: 'MySQL = MariaDB',
+        noSQL: 'MongoDB',
+        infra: 'AWS',
+        getAuthor: function () {
+          return '정민영';
+        },
+      };
+
+      // 구조화된 방식으로 객체의 속성 값을 추출
+      const frontTech = techTrend.front;
+      const backendTech = techTrend.backend;
+      console.log(
+        '구조화된 방식으로 추출한 객체의 속성 변수 값',
+        frontTech,
+        backendTech
+      );
+
+      const { front, backend, server, rdbms, noSQL, infra, getAuthor } =
+        techTrend;
+      console.log(
+        '비구조화 할당 방식으로 추출한 값',
+        front,
+        backend,
+        server,
+        rdbms,
+        noSQL,
+        infra,
+        getAuthor()
+      );
+
+      // 비구조화 할당 문법을 사용하는 이유
+      // 적은 코드로 빠르게 구현할 수 있음
+
+      // 관계형 데이터베이스는 데이터의 무결성을 가지고있음
+      // 정의에 맞지 않는 데이터를 받지 않는다.
+
+      // 그러나 MongoDB는 약하다.
+      // 허나 처리속도가 빠르다.
+    </script>
+  </body>
+</html>
