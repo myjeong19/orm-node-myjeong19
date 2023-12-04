@@ -5,7 +5,7 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('express-nodesample1:server');
+var debug = require('debug')('myjeongfirstnodeapp:server');
 var http = require('http');
 
 /**

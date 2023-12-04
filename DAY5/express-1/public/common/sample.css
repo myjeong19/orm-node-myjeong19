@@ -1,0 +1,26 @@
+body,
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+label {
+  display: inline-block;
+  width: 5rem;
+}
+
+form {
+  align-items: center;
+  width: 50vw;
+  height: 50vh;
+}
+input {
+  height: 2.5rem;
+  width: 10rem;
+}
+
+form div {
+  margin: 1rem;
+}
