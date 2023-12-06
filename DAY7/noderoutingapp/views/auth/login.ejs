@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>로그인 웹 페이지</title>
+  </head>
+  <body>
+    <link rel="stylesheet" href="/stylesheets/login.css" />
+    <h1>로그인 페이지</h1>
+
+    <!-- 사용자로 부터 데이터를 입력 받아 서버로 전송해주는 역할 제공 -->
+    <!-- action 입력 데이터를 보내는 주소 -->
+    <!-- 클라이언트에서 서버로 요청하는 방식 (GET, POST....) -->
+    <form action="/auth/login" method="post" onsubmit="return fnFormCheck()">
+      <div>
+        <label for="email">이메일</label>
+        <input id="email" type="email" name="email" value="" />
+      </div>
+      <div>
+        <label for="pWassword">비밀번호</label>
+        <input id="password" type="password" name="password" value="" />
+      </div>
+      <input type="submit" value="로그인" />
+    </form>
+
+    <script>
+      const fnFormCheck = () => {
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+
+        if (email.value === '') {
+          alert('아이디를 입력해주세요');
+          email.focus();
+          return false;
+        }
+        if (password.value === '') {
+          password.focus();
+          alert('비밀번호를 입력해주세요');
+          return false;
+        }
+        return true;
+      };
+    </script>
+  </body>
+</html>

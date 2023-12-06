@@ -8,6 +8,8 @@ var express = require('express');
  */
 var router = express.Router();
 
+router.get('/main', (req, res) => res.render('main'));
+
 /**
  * 1. 샘플 노드 익스프레스 웹 사이트의 메인 페이지 요청과 응답처리 라우팅 메소드
  * 호출 주소 체계는 http://localhost:3000/
@@ -47,7 +49,7 @@ router.get('/company', (req, res) =>
  * 사용자 요청은 동일 추소 체계와 동일 요청 방식과 일치하는 라이퉁 메소드를 찾아,
  * 해당 메소드의 콜백함수가 실행되어 응답이 전달됩니다.
  */
-router.get('/contact', (req, res, next) =>
+router.get('/contact', (req, res) =>
   res.render('company/contact', {
     phone: '010-3957-3540',
     email: 'myjeong19@naver.com',
@@ -56,7 +58,7 @@ router.get('/contact', (req, res, next) =>
 );
 
 // 7. 회사 제품 소개 웹 페이지
-router.get('/product/labtop', (req, res, next) => {
+router.get('/product/labtop', (req, res) => {
   const labtop = {
     productName: '맥북',
     brand: '애플',
@@ -67,7 +69,9 @@ router.get('/product/labtop', (req, res, next) => {
 });
 
 // 8. 회사 대표 인삿말 웹 페이지
-// router.get('/', (req, res, next) => {});
+router.get('/company/intro', (req, res) => {
+  res.render('company/intro');
+});
 
 // 9.반드시 라우터 파일에서는 해당 라우터 객체를 외부로 exports한다.
 module.exports = router;
