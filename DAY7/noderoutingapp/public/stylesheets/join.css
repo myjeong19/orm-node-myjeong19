@@ -1,0 +1,35 @@
+body {
+  display: flex;
+  justify-content: center;
+  background-color: #e8e8e8;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: #fff;
+  width: 35vw;
+  height: 100vh;
+}
+
+.checkbox {
+  width: 30vw;
+}
+
+.info {
+  position: absolute;
+  top: 5vw;
+  width: 30vw;
+}
+
+button {
+  position: absolute;
+  top: 75vh;
+  width: 30vw;
+  height: 10vh;
+  border: none;
+  border-radius: 1rem;
+}

@@ -2,8 +2,47 @@
 <html>
   <head>
     <title>회원 약관 페이지</title>
+    <link rel="stylesheet" href="/stylesheets/join.css" />
   </head>
   <body>
-    <h1>회원 약관 페이지</h1>
+    <div class="login">
+      <div class="info">
+        <h1>
+          환영합니다! <br />
+          무신사에 가입하시려면 <br />약관에 동의해 주세요.
+        </h1>
+      </div>
+      <div class="checkbox">
+        <input id="loginJoinMembershipCheckbox1" type="checkbox" />
+        <label for="loginJoinMembershipCheckbox1"
+          >[필수] 만 14세 이상입니다.</label
+        >
+      </div>
+      <div class="checkbox">
+        <input id="loginJoinMembershipCheckbox2" type="checkbox" />
+        <label for="loginJoinMembershipCheckbox2"
+          >[필수] 무신사, 무신사 스토어 이용 약관 자세히</label
+        >
+      </div>
+      <div class="checkbox">
+        <input id="loginJoinMembershipCheckbox3" type="checkbox" />
+        <label for="loginJoinMembershipCheckbox3"
+          >[필수] 개인정보 수집 및 이용 동의 자세히</label
+        >
+      </div>
+      <div class="checkbox">
+        <input id="loginJoinMembershipCheckbox4" type="checkbox" />
+        <label for="loginJoinMembershipCheckbox4"
+          >[선택] 광고성 정보 수신 동의</label
+        >
+      </div>
+      <div class="checkbox">
+        <input id="loginJoinMembershipCheckbox5" type="checkbox" />
+        <label for="loginJoinMembershipCheckbox5"
+          >[선택] 개인정보 수집 및 이용 동의 자세히</label
+        >
+      </div>
+      <button class="button">동의하고 회원가입하기</button>
+    </div>
   </body>
 </html>
