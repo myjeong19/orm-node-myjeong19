@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 
 //STEP1: 개발자가 정의한 라우터 파일 참조
 var authRouter = require('./routes/auth');
+var memberRouter = require('./routes/member');
 
 var app = express();
 
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/member', memberRouter);
 
 // STEP2 auth 라우터 파일의 기본 호출 주소 체계 정의
 app.use('/auth', authRouter);
