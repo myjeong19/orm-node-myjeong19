@@ -4,7 +4,7 @@ body {
   background-color: #e8e8e8;
 }
 
-.login {
+.begin {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -15,27 +15,17 @@ body {
   height: 100vh;
 }
 
-.checkbox {
-  width: 30vw;
-}
-
-.info {
-  position: absolute;
-  top: 5vw;
-  width: 30vw;
-}
-
-a {
+button {
   display: flex;
   justify-content: center;
   align-items: center;
   position: absolute;
-  color: #fff;
   top: 75vh;
-  width: 30vw;
-  height: 10vh;
   border: none;
   border-radius: 1rem;
+  width: 25vw;
+  height: 10vh;
   text-decoration: none;
   background-color: #111;
+  color: #fff;
 }

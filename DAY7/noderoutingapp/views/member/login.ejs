@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>회원 가입</title>
   </head>
   <body>
-    <form action="/member/entry" method="post">
+    <form action="/member/login" method="post">
       <div>
         <label for="email">이메일</label>
         <input id="email" type="email" name="email" value="" />
@@ -13,8 +12,9 @@
       <div>
         <label for="pWassword">비밀번호</label>
         <input id="password" type="password" name="password" value="" />
+        <!-- name이 데이터를 추출할 때 Key 값 ex) req.password-->
       </div>
-      <input type="submit" value="로그인" />
+      <button type="submit" value="로그인">로그인</button>
     </form>
   </body>
 </html>

@@ -1,3 +1,8 @@
+body {
+  display: flex;
+  flex-direction: column;
+}
+
 .nav {
   display: flex;
   justify-content: space-between;
@@ -6,4 +11,14 @@
 
 a {
   margin: 1rem;
+}
+
+section {
+  width: 50vw;
+  height: 100vh;
+}
+
+main {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
