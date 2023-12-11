@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <title>기존 게시글 정보 관리</title>
+  </head>
+  <body>
+    <h1>기존 게시글 정보 관리</h1>
+    <form action="/articles/modify<%=article.articleIdx%>" method="post">
+      <div>
+        <label for="title">제목</label>
+        <input id="title" type="text" name="title" value="<%=article.title%>" />
+      </div>
+      <div>
+        <label for="content">내용</label>
+        <textarea id="" name="contents" rows="20" cols="10" style="width: 90%">
+          <%=article.contents%>
+      </textarea
+        >
+      </div>
+      <div>
+        <label for="register">작성자</label>
+        <input
+          ㅌid="register"
+          type="text"
+          name="register"
+          value="<%=article.registMemberId%>"
+        />
+      </div>
+      <div>
+        <input type="submit" value="수정" />
+        <a href="/articles/delete?aidx=<%=article.articleIdx%>">삭제하기</a>
+        <a href="/articles">게시글 목록 이동</a>
+      </div>
+    </form>
+  </body>
+</html>
