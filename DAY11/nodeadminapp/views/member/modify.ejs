@@ -9,9 +9,13 @@
     <nav>
       <strong><a href="/member"> 사용자 정보 관리</a></strong>
       <a href="/main">전체 관리 페이지</a>
-      <p href="/member/create">생성</p>
+      <a href="/member/create">생성</a>
       <a href="/member/list">목록</a>
       <p>수정</p>
     </nav>
+
+    <form action="/member/modify" method="post">
+      <button type="submit">수정하기</button>
+    </form>
   </body>
 </html>

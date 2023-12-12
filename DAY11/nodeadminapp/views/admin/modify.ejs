@@ -7,14 +7,55 @@
   </head>
   <body>
     <nav>
-      <strong
-        ><a href="/admin"> 관리자 사이트 관리자 계정 정보 관리 </a></strong
-      >
+      <strong><a href="/admin"> 관리자 계정 정보 관리 </a></strong>
       <a href="/main">전체 관리 페이지</a>
       <a href="/admin/create">생성</a>
       <a href="/admin/list">목록</a>
-      <p>수정</p>
-      <a href="/admin/delete">삭제</a>
     </nav>
+    <main>
+      <form
+        action=":aid
+      "
+        method="post"
+      >
+        <div>
+          <label for="">고유번호</label>
+          <input type="text" value="<%=admin.adminIdx%>" />
+        </div>
+        <div>
+          <label for="">회사</label>
+          <input type="text" value="<%=admin.company%>" />
+        </div>
+        <div>
+          <label for="">부서명</label>
+          <input type="text" value="<%=admin.department%>" />
+        </div>
+        <div>
+          <label for="">아이디</label>
+          <input type="text" value="<%=admin.id%>" />
+        </div>
+        <div>
+          <label for="">이메일</label>
+          <input type="text" value="<%=admin.email%>" />
+        </div>
+        <div>
+          <label for="">전화번호</label>
+          <input type="text" value="<%=admin.tell%>" />
+        </div>
+        <div>
+          <label for="">사용 여부</label>
+          <input type="text" value="<%=admin.display%>" />
+        </div>
+        <div>
+          <label for="">등록일시</label>
+          <input type="text" value="<%=admin.createDate%>" />
+        </div>
+        <div>
+          <label for="">수정일시</label>
+          <input type="text" value="<%=admin.modifyDate%>" />
+        </div>
+        <button type="submit">수정하기</button>
+      </form>
+    </main>
   </body>
 </html>

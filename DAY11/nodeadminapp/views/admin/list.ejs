@@ -11,8 +11,45 @@
       <a href="/main">전체 관리 페이지</a>
       <a href="/admin/create">생성</a>
       <p>목록</p>
-      <a href="/admin/modify">수정</a>
-      <a href="/admin/delete">삭제</a>
     </nav>
+
+    <main>
+      <table>
+        <thead>
+          <tr>
+            <th>고유번호</th>
+            <th>소속 회사</th>
+            <th>부서명</th>
+            <th>계정 아이디</th>
+            <th>메일 주소</th>
+            <th>전화번호</th>
+            <th>사용 여부</th>
+            <th>등록일시</th>
+            <th>수정하기</th>
+            <th>수정일시</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% for(var i=0;i < adminList.length;i++) { %>
+          <tr>
+            <td><%=adminList[i].adminIdx%></td>
+
+            <td><%=adminList[i].company%></td>
+
+            <td><%=adminList[i].department%></td>
+            <td><%=adminList[i].id%></td>
+            <td><%=adminList[i].email%></td>
+            <td><%=adminList[i].tell%></td>
+            <td><%=adminList[i].display%></td>
+            <td><%=adminList[i].createDate%></td>
+            <td><%=adminList[i].modifyDate%></td>
+            <td><a href="/admin/modify/<%=adminList[i].adminIdx%>">수정</a></td>
+            <td><a href="/admin/delete">삭제</a></td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </main>
   </body>
 </html>
