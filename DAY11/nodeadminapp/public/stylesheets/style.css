@@ -13,7 +13,8 @@ body {
 }
 
 a {
-  color: #0059ff;
+  padding: 1rem;
+  color: #0045bb;
   text-decoration: none;
 }
 
@@ -52,6 +53,14 @@ button {
   width: 10rem;
   height: 3.5rem;
   border: none;
+  cursor: pointer;
+  background-color: #111;
+  color: #fff;
+  transition: 1s all;
+}
+
+button:hover {
+  background-color: #0045bb;
 }
 
 .form {

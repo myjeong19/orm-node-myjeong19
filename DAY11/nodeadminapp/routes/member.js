@@ -2,19 +2,19 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  res.render('member/member', { title: 'main' });
+  res.render('member/member');
 });
 
 router.get('/list', async (req, res) => {
-  res.render('member/list', { title: 'list' });
+  res.render('member/list');
 });
 router.get('/create', async (req, res) => {
-  res.render('member/create', { title: 'create' });
+  res.render('member/create');
 });
 router.post('/create', async (req, res) => {});
 
 router.get('/modify', async (req, res) => {
-  res.render('member/modify', { title: 'modify' });
+  res.render('member/modify');
 });
 
 router.post('/modify', async (req, res) => {});
