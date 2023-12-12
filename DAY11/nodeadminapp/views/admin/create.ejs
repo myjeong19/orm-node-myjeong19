@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+  <head>
+    <title>관리자 계정 관리 페이지</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <nav>
+      <strong
+        ><a href="/admin"> 관리자 사이트 관리자 계정 정보 관리 </a></strong
+      >
+      <a href="/main">전체 관리 페이지</a>
+      <p href="/admin/create">생성</p>
+      <a href="/admin/list">목록</a>
+      <a href="/admin/modify">수정</a>
+    </nav>
+
+    <main>
+      <div class="info">
+        <h1 class="h1">관리자 아이디 생성</h1>
+        <p>관리자 아이디를 생성해주세요.</p>
+      </div>
+      <form class="form" action="/admin/create" method="post">
+        <div>
+          <label for="id">관리자 이메일</label>
+          <input id="id" type="email" />
+        </div>
+        <div>
+          <label for="password">관리자 비밀번호</label>
+          <input id="password" type="password" />
+        </div>
+        <div>
+          <label for="password_check">관리자 비밀번호 확인</label>
+          <input id="password_check" type="password" />
+        </div>
+
+        <button type="submit">생성</button>
+      </form>
+    </main>
+  </body>
+</html>
