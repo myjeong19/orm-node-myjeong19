@@ -4,6 +4,37 @@
     <title>회원 가입</title>
   </head>
   <body>
-    <h1>회원 가입</h1>
+    <main>
+      <form action="/entry" method="post">
+        <h1>회원 가입</h1>
+
+        <div>
+          <label for="email">이메일</label>
+          <input id="email" type="email" />
+        </div>
+
+        <div>
+          <label for="name">이름 </label>
+          <input id="name" type="text" />
+        </div>
+
+        <div>
+          <label for="date">생년월일 </label>
+          <input id="date" type="date" />
+        </div>
+
+        <div>
+          <label for="password">비밀번호 </label>
+          <input id="password" type="password" />
+        </div>
+
+        <div>
+          <label for="password_check">비밀번호 확인 </label>
+          <input id="password_check" type="password_check" />
+        </div>
+
+        <button type="submit">가입하기</button>
+      </form>
+    </main>
   </body>
 </html>
