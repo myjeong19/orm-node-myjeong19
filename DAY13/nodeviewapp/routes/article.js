@@ -2,6 +2,12 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/list', async (req, res) => {
+  const boardTypeCode = '0';
+  const title = '';
+  const isDisplayCode = '9';
+
+  const searchOption = { boardTypeCode, title, isDisplayCode };
+
   // STEP1: 모든 게시글 정보 조회
   const articles = [
     {
@@ -40,7 +46,7 @@ router.get('/list', async (req, res) => {
   ];
 
   // STEP2: 게시글 전체 정보를 list.ejs에 전달
-  res.render('article/list', { articles });
+  res.render('article/list', { articles, searchOption });
 });
 
 router.post('/list', async (req, res) => {
@@ -48,6 +54,8 @@ router.post('/list', async (req, res) => {
   const boardTypeCode = req.body.boardTypeCode;
   const title = req.body.title;
   const isDisplayCode = req.body.isDisplayCode;
+
+  const searchOption = { boardTypeCode, title, isDisplayCode };
 
   const articles = [
     {
@@ -63,7 +71,7 @@ router.post('/list', async (req, res) => {
     },
   ];
 
-  res.render('article/list', { articles });
+  res.render('article/list', { articles, searchOption });
 });
 
 router.get('/create', async (req, res) => {
@@ -71,13 +79,37 @@ router.get('/create', async (req, res) => {
 });
 
 router.post('/create', async (req, res) => {
-  res.redirect('list');
+  // STEP1: 사용자가 입력한 게시글 등록 데이터 추출
+  const {
+    boardTypeCode,
+    title,
+    contents,
+    articleTypeCode,
+    isDisplayCode,
+    register,
+  } = req.body;
+
+  // STEP2: 추출된 사용자 입력데이터를 단일 게시글 json데이터로 구성해서, DB article테이블에 영구 저장 처리
+
+  const article = {
+    boardTypeCode,
+    title,
+    contents,
+    articleTypeCode,
+    isDisplayCode,
+    register,
+    registDate: new Date(),
+  };
+
+  // STEP3: 등록 처리후 게시글 목록 웹 페이지로 이동처리
+
+  res.redirect('/article/list');
 });
 
 router.get('/delete', async (req, res) => {
   const articleIndex = req.query.aid;
 
-  res.redirect('list');
+  res.redirect('/article/list');
 });
 
 router.get('/modify/:aid', async (req, res) => {

@@ -83,6 +83,7 @@
                 class="navbar-form-custom"
                 method="post"
                 action="#"
+                id="articleForm"
               >
                 <div class="form-group">
                   <input
@@ -123,86 +124,112 @@
         </div>
 
         <!--우측 콘텐츠 영역 -->
-        <div class="wrapper wrapper-content">
-          <div class="ibox-content m-b-sm border-bottom">
-            <div class="row">
-              <div class="col-md-4 col-sm-12">
-                <div class="form-group">
-                  <label class="control-label" for="MobileNo">카테고리</label>
-                  <select name="boardTypeCode" class="form-control">
-                    <option value="0">카테고리를 선택해주세요.</option>
-                    <option value="1">공지 사항 게시판</option>
-                    <option value="2">자유 게시판</option>
-                    <option value="2">기술 게시판</option>
-                  </select>
+        <form action="/article/create" method="post" id="articleForm">
+          <div class="wrapper wrapper-content">
+            <div class="ibox-content m-b-sm border-bottom">
+              <div class="row">
+                <div class="col-md-4 col-sm-12">
+                  <div class="form-group">
+                    <label class="control-label" for="MobileNo">카테고리</label>
+                    <select
+                      name="boardTypeCode"
+                      id="boardTypeCode"
+                      class="form-control"
+                    >
+                      <option value="0">카테고리를 선택해주세요.</option>
+                      <option value="1">공지 사항 게시판</option>
+                      <option value="2">자유 게시판</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-            </div>
-            <!-- 제목 -->
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="form-group">
-                  <label class="control-label">글 제목</label>
-                  <input type="text" class="form-control" name="title" />
+              <!-- 제목 -->
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="control-label">글 제목</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="title"
+                      id="title"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- 본문 -->
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="form-group">
-                  <label class="control-label">본문</label>
-                  <textarea
-                    class="form-control"
-                    rows="10"
-                    cols="5"
-                    name="contents"
-                  ></textarea>
+              <!-- 본문 -->
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="control-label">본문</label>
+                    <textarea
+                      class="form-control"
+                      rows="10"
+                      cols="5"
+                      name="contents"
+                      id="contents"
+                    ></textarea>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- 게시글 유형, 게시 여부 작성자 -->
-            <div class="row">
-              <div class="col-sm-4">
-                <div class="form-group">
-                  <label class="control-label" for="MobileNo"
-                    >게시글 유형</label
-                  >
-                  <select name="articleTypecode" class="form-control">
-                    <option value="0">고정 여부를 선택해주세요.</option>
-                    <option value="Y">상단 고정</option>
-                    <option value="N">일반 게시글</option>
-                  </select>
+              <!-- 게시글 유형, 게시 여부 작성자 -->
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="control-label" for="MobileNo"
+                      >게시글 유형</label
+                    >
+                    <select
+                      name="articleTypecode"
+                      class="form-control"
+                      id="articleTypecode"
+                    >
+                      <option value="0">고정 여부를 선택해주세요.</option>
+                      <option value="Y">상단 고정</option>
+                      <option value="N">일반 게시글</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="control-label" for="MobileNo"
+                      >게시 여부</label
+                    >
+                    <select
+                      name="isDisplayCode"
+                      class="form-control"
+                      id="isDisplayCode"
+                    >
+                      <option value="0">게시 여부를 선택해주세요.</option>
+                      <option value="Y">공개</option>
+                      <option value="N">비공개</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label class="control-label">작성자</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="register"
+                      id="register"
+                    />
+                  </div>
                 </div>
               </div>
-              <div class="col-sm-4">
-                <div class="form-group">
-                  <label class="control-label" for="MobileNo">게시 여부</label>
-                  <select name="isDisplayCode" class="form-control">
-                    <option value="0">게시 여부를 선택해주세요.</option>
-                    <option value="Y">공개</option>
-                    <option value="N">비공개</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-sm-4">
-                <div class="form-group">
-                  <label class="control-label">작성자</label>
-                  <input type="text" class="form-control" name="register" />
-                </div>
-              </div>
-            </div>
 
-            <div class="text-center">
-              <button type="button" class="btn btn-outline-primary">
-                저장
-              </button>
-              <a href="/article/list" class="btn btn-outline-primary">목록</a>
+              <div class="text-center">
+                <button type="submit" class="btn btn-outline-primary">
+                  저장
+                </button>
+                <a href="/article/list" class="btn btn-outline-primary">목록</a>
+              </div>
             </div>
           </div>
-        </div>
+        </form>
 
         <!--우측 하단 풋터 영역-->
         <div class="footer">
@@ -227,6 +254,50 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-    <script></script>
+    <script>
+      const handleReadyForm = () => {
+        $('#boardTypeCode').focus();
+      };
+
+      $(document).ready(handleReadyForm);
+
+      const handleValidation = () => {
+        // 게시판 유형 값 선택 여부 체크
+        if ($('#boardTypeCode').val() == '0') {
+          alert('게시판 유형을 선택해주세요. ');
+          $('#boardTypeCode').focus();
+          return false;
+        }
+
+        if ($('#title').val() === '') {
+          alert('제목을 입력해주세요.');
+          $('#title').focus();
+          return false;
+        }
+
+        if ($('#articleTypeCode').val() === '') {
+          alert('게시글 유형을 선택해주세요.');
+          $('#articleTypeCode').focus();
+          return false;
+        }
+
+        if ($('#isDisplayCode').val() === '0') {
+          alert('게시여부를 선택해주세요.');
+          $('#isDisplayCode').focus();
+          return false;
+        }
+
+        if ($('#register').val() === '') {
+          alert('작성자 명을 입력해주세요.');
+          $('#isDisplayCode').focus();
+          return false;
+        }
+
+        return true;
+      };
+
+      // form 유효성 검사
+      $('#articleForm').submit(handleValidation);
+    </script>
   </body>
 </html>

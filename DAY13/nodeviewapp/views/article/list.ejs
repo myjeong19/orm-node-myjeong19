@@ -132,16 +132,11 @@
                 <div class="col-sm-4">
                   <div class="form-group">
                     <label class="control-label" for="MobileNo">카테고리</label>
-                    <select
-                      name="boardTypeCode"
-                      id="boardTypeCode"
-                      class="form-control"
-                    >
-                      <option value="0">전체</option>
-                      <option value="1">공지 사항 게시판</option>
-                      <option value="2">자유 게시판</option>
-                      <option value="2">기술 게시판</option>
-                    </select>
+                    <select name="boardTypeCode" id="boardTypeCode" class="form-control">
+                      <option value="0" <% if( searchOption.boardTypeCode == "0"){ %> selected <% } %> >전체</option>
+                      <option value="1" <% if( searchOption.boardTypeCode == "1"){ %> selected <% } %>>공지게시판</option>
+                      <option value="2" <% if( searchOption.boardTypeCode == "2"){ %> selected <% } %>>자유 게시판</option>
+                  </select>
                   </div>
                 </div>
                 <div class="col-sm-4">
@@ -149,7 +144,12 @@
                     <label class="control-label" for="OrderName" name="title"
                       >글 제목</label
                     >
-                    <input type="text" class="form-control" />
+                    <input
+                      name="title"
+                      type="text"
+                      class="form-control"
+                      value="<%= searchOption.title %>"
+                    />
                   </div>
                 </div>
                 <div class="col-sm-4">
@@ -158,9 +158,9 @@
                       >게시 여부</label
                     >
                     <select name="isDisplayCode" class="form-control">
-                      <option value="9">전체</option>
-                      <option value="1">공개</option>
-                      <option value="0">비공개</option>
+                      <option value="9" <% if( searchOption.isDisplayCode == "9"){ %> selected <% } %>>전체</option>
+                      <option value="1" <% if( searchOption.isDisplayCode == "1"){ %> selected <% } %>>공개</option>
+                      <option value="0" <% if( searchOption.isDisplayCode == "0"){ %> selected <% } %>>비공개</option>
                     </select>
                   </div>
                 </div>
@@ -202,11 +202,12 @@
                       <tbody class="hoverTblBody">
                         <% for (var i =0;i < articles.length; i++){ %>
                         <tr>
-                          <td>1<%= articles[i].article_id%></td>
+                          <td><%= articles[i].article_id%></td>
                           <td>
                             <% if(articles[i].is_display_code == 1){%> 공지
                             게시판 <% } else{ %> 자유 게시판 <% }%>
                           </td>
+
                           <td>
                             <a
                               href="/article/modify/<%= articles[i].article_id%>"
@@ -256,16 +257,16 @@
 
     <script>
       // 조회폼 입력 유효성 검사
-
+      /*
       $('#searchForm').submit(() => {
-        if ($('#boardTypeCode').val() == 0) {
+       if ($('#boardTypeCode').val() == 0) {
           alert('카테고리를 선택해주세요.');
-          $('#boardTypeCode').focus();
+         $('#boardTypeCode').focus();
           return false;
         }
 
         return true;
-      });
+      }); */
     </script>
   </body>
 </html>
