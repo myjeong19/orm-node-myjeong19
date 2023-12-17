@@ -1,86 +1,116 @@
 const express = require('express');
 const router = express.Router();
 
-const articles = [
-  {
-    article_id: 1,
-    board_type_code: 1,
-    title: '2023년 12월 14일 18시 임시점검',
-    contents: '임시 점검 실시 예정입니다.',
-    view_count: 121,
-    ip_address: '111.111.111.11',
-    is_display_code: 1,
-    reg_date: '2023-12-13',
-    reg_member_id: 'myjeong19',
-  },
-  {
-    article_id: 2,
-    board_type_code: 2,
-    title: '안녕하세요 정민영입니다.',
-    contents: '환영합니다.',
-    view_count: 1,
-    ip_address: '111.111.111.11',
-    is_display_code: 0,
-    reg_date: '2023-12-14',
-    reg_member_id: 'myjeong19',
-  },
-];
-
+//게시글 목록 조회
+//http://localhost:/article/list
+//GET
 router.get('/list', async (req, res) => {
-  const boardTypeCode = '0';
-  const title = '';
-  const isDisplayCode = '9';
+  const searchOption = {
+    boardTypeCode: '0',
+    title: '',
+    isDisplayCode: '9',
+  };
 
-  const searchOption = { boardTypeCode, title, isDisplayCode };
-
-  // STEP1: 모든 게시글 정보 조회
-
-  // STEP2: 게시글 전체 정보를 list.ejs에 전달
-  res.render('article/list', { articles, searchOption });
-});
-
-router.post('/list', async (req, res) => {
-  // STEP 1: 사용자가 선택 혹은 입력한 조회 옵션 데이터 추출
-  const boardTypeCode = req.body.boardTypeCode;
-  const title = req.body.title;
-  const isDisplayCode = req.body.isDisplayCode;
-
-  const searchOption = { boardTypeCode, title, isDisplayCode };
+  //STEP1 :DB에서 모든 게시글 데이터 목록을 조회
 
   const articles = [
     {
       article_id: 1,
       board_type_code: 1,
-      title: '2023년 12월 14일 18시 임시점검',
-      contents: '임시 점검 실시 예정입니다.',
-      view_count: 121,
+      title: '2023.12.17 21시22분 긴급 점검진행 예정입니다.',
+      contents: '2023.12.17 21시22분 긴급 점검진행 예정입니다.',
+      view_count: 10,
       ip_address: '111.111.111.11',
       is_display_code: 1,
-      reg_date: '2023-12-13',
+      reg_date: '2023-12-17',
+      reg_member_id: 'myjeong19',
+    },
+    {
+      article_id: 2,
+      board_type_code: 2,
+      title: '갈비찜을 밥 위에 얹어주세요.',
+      contents:
+        '갈비찜을 밥 위에 얹어주세요. </br> 내가 좋아하는 갈비찜 덮밥 아아~ 아아~ 냠냠!',
+      view_count: 20,
+      ip_address: '222.111.124.44',
+      is_display_code: 0,
+      reg_date: '2023-12-17',
+      reg_member_id: 'myjeong19',
+    },
+    {
+      article_id: 3,
+      board_type_code: 2,
+      title: '안녕하세요 정민영입니다.',
+      contents: '반갑습니다.',
+      view_count: 30,
+      ip_address: '123.111.124.44',
+      is_display_code: 1,
+      reg_date: '2023-12-14',
       reg_member_id: 'myjeong19',
     },
   ];
 
-  res.render('article/list', { articles, searchOption });
+  //STEP2 : 게시글 전체 목록을 list.ejs뷰에 전달
+  res.render('article/list.ejs', { articles, searchOption });
 });
 
-router.get('/create', async (req, res) => {
-  res.render('article/create');
-});
+// 게시글 목록에서 조회옵션 데이터를 전달 받아
+// 조회옵션기반 게시글 목록 조회후
+// 게시글 목록 페이지 처리
+//http://localhost:/article/list
+//POST
+router.post('/list', async (req, res) => {
+  //STEP1 : 사용자가 선택/입력한 조회옵션 데이터를 추출한다.
+  const boardTypeCode = req.body.boardTypeCode;
+  const title = req.body.title;
+  const isDisplayCode = req.body.isDisplayCode;
 
-router.post('/create', async (req, res) => {
-  // STEP1: 사용자가 입력한 게시글 등록 데이터 추출
-  const {
+  const searchOption = {
     boardTypeCode,
     title,
-    contents,
-    articleTypeCode,
     isDisplayCode,
-    register,
-  } = req.body;
+  };
 
-  // STEP2: 추출된 사용자 입력데이터를 단일 게시글 json데이터로 구성해서, DB article테이블에 영구 저장 처리
+  //STEP2 : 사용자가 입력/선택한 조회옵션 데이터를 기반으로 DB에서 게시글 목록을 재조회
+  const articles = [
+    {
+      article_id: 1,
+      board_type_code: 1,
+      title: '2023.12.17 21시22분 긴급 점검진행 예정입니다.',
+      contents: '2023.12.17 21시22분 긴급 점검진행 예정입니다.',
+      view_count: 10,
+      ip_address: '111.111.111.11',
+      is_display_code: 1,
+      reg_date: '2023-12-17',
+      reg_member_id: 'myjeong19',
+    },
+  ];
 
+  //STEP3 ) 게시글 목록 페이지 list.ejs에 데이터 목록을 전달
+  res.render('article/list.ejs', { articles, searchOption });
+});
+
+//신규 게시글 등록
+//http://localhost:3000/article/create
+router.get('/create', async (req, res) => {
+  res.render('article/create.ejs');
+});
+
+//신규 게시글 사용자 등록정보 처리 요청 및 응답 라우팅메소드
+router.post('/create', async (req, res) => {
+  //STEP1 : 사용자가 입력한 게시글 등록 데이터 추출
+  const boardTypeCode = req.body.boardTypeCode;
+  const title = req.body.title;
+  const contents = req.body.contents;
+  const articleTypeCode = req.body.articleTypeCode;
+  const isDisplayCode = req.body.isDisplayCode;
+  const register = req.body.register;
+
+  //STEP2 :추출된 사용자 입력데이터를 단일 게시글 json데이터로 구성해
+  //DB article테이블에 영구적으로 저장처리
+  //저장처리후 article테이블에 저장된 데이터 반환
+
+  //등록할 게시글 데이터
   const article = {
     boardTypeCode,
     title,
@@ -88,74 +118,82 @@ router.post('/create', async (req, res) => {
     articleTypeCode,
     isDisplayCode,
     register,
-    registDate: new Date(),
+    registDate: Date.now(),
   };
 
-  // STEP3: 등록 처리후 게시글 목록 웹 페이지로 이동처리
-
+  //STEP3 :등록처리후 게시글 목록 웹페이지로 이동처리
   res.redirect('/article/list');
 });
 
+//기존 게시를 삭제처리
+//http://localhost:3000/article/delete?aid=3
 router.get('/delete', async (req, res) => {
-  const articleIndex = req.query.aid;
+  //STEP1 : 삭제하려는 게시글 고유번호를 추출
+  const articleIdx = req.query.aid;
 
-  res.redirect('list');
+  //STEP2 :게시번호기반으로 실제 DB article테이블에서 데이터를 삭제처리
+
+  //STEP3 : 게시글 목록 페이지로 이동
+  res.redirect('/article/list');
 });
 
+//기존 게시글 정보 확인 및 수정
+//http://localhost:3000/article/modify/1
+//GET
 router.get('/modify/:aid', async (req, res) => {
-  const boardTypeCode = '0';
-  const title = '';
-  const isDisplayCode = '9';
+  //STEP1 :선택한 게시글 고유번호를 파라메터 방식으로 URL을 통해 전달받음
+  const articleIdx = req.params.aid;
 
-  const searchOption = { boardTypeCode, title, isDisplayCode };
-
-  // STEP1 :선택한 게시글 고유 번호를 파라미터 방식으로 URL을 통해 전달
-  const articleIndex = req.params.aid;
-
-  // STEP2 :해당 게시글 번호에 해당하는 정보 표시
+  //STEP2 :해당 게시글 번호에 해당하는 특정 단일게시글 정보를 DB article테이블에서 조회
   const article = {
     article_id: 1,
     board_type_code: 1,
-    title: '2023년 12월 14일 18시 임시점검',
-    contents: '임시 점검 실시 예정입니다.',
-    view_count: 121,
-    ip_address: '111.111.111.11',
+    title: '공지게시글 1번글입니다.',
+    contents: '공지게시글 1번 내용입니다.',
+    view_count: 10,
+    ip_address: '111.111.124.44',
     is_display_code: 1,
     article_type_code: 1,
-    reg_date: '2023-12-13',
+    reg_date: '2023-12-12',
     reg_member_id: 'myjeong19',
   };
 
-  // STEP3: 단일 게시글 정보를 뷰에 전달.
-  res.render('article/modify', { article, searchOption });
+  //STEP3 : 단일 게시글 정보르 뷰에 전달
+  res.render('article/modify.ejs', { article });
 });
 
+//기존 게시글 사용자 수정 정보처리
+//http://localhost:3000/article/modify/1
+//POST
 router.post('/modify/:aid', async (req, res) => {
-  const articleIndex = req.params.aid;
+  //게시글 고유번호 URL파라메터에서 추출
+  const articleIdx = req.params.aid;
 
-  //STEP1 :사용자 등록 데이터 추출
-  let {
-    boardTypeCode,
-    title,
-    contents,
-    articleTypeCode,
-    isDisplayCode,
-    register,
-  } = req.body;
+  //STEP1 : 사용자가 입력한 게시글 등록 데이터 추출
+  const boardTypeCode = req.body.boardTypeCode;
+  const title = req.body.title;
+  const contents = req.body.contents;
+  const articleTypeCode = req.body.articleTypeCode;
+  const isDisplayCode = req.body.isDisplayCode;
+  const register = req.body.register;
 
-  // STEP2 :추출된 사용자 입력데이터를 단일 게시글 json데이어로 구성해서 DB article 테이블에 수정처리한다.
-  // 수정 처리시, 처리 값이 반환
+  //STEP2 :추출된 사용자 입력데이터를 단일 게시글 json데이터로 구성해,
+  //DB article테이블에 수정처리
+  //수정 처리하면 처리건수값이 반환
+
+  //수정할 게시글 데이터
   const article = {
-    article_id: articleIndex,
+    article_id: articleIdx,
     boardTypeCode,
     title,
     contents,
     articleTypeCode,
     isDisplayCode,
     register,
-    registDate: new Date(),
+    registDate: Date.now(),
   };
 
+  //STEP3 :수정처리후 게시글 목록 웹페이지로 이동처리
   res.redirect('/article/list');
 });
 

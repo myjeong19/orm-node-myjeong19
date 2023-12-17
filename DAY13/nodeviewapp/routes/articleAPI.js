@@ -1,216 +1,230 @@
-var express = require('express');
-var router = express.Router();
+//게시글 데이터 관리 전용 RESTful API
 
-// 전체 게시글 조회
+const express = require('express');
+const router = express.Router();
+
+class ApiResult {
+  constructor(code, data, result) {
+    this.code = code;
+    this.data = data;
+    this.result = result;
+  }
+}
+
+//전체 게시글 목록 데이터 조회
+//http://localhost:3000/api/article/all
 router.get('/all', async (req, res) => {
-  // API 라우팅 메소드 반환 형식 정의
-  const apiResult = {
-    // 정상적인 응답 200
-    code: '200',
-    // 게시글 목록 데이터를 data 속성에 담아서 줌.
-    data: [],
-    result: 'OK',
-  };
-  //   예외 처리
+  //API라우팅 메소드 반환형식 정의
+  let apiResult;
+
+  //예외처리 구문....
   try {
-    //   STEP1 : DB에서 전체 게시글 목록 데이터 조회
+    //try블록안에 에러가 발생할수 있는 각종 코드 구현
+
+    //STEP1 :DB에서 전체 게시글 목록 데이터를 조회
     const articles = [
       {
         article_id: 1,
         board_type_code: 1,
-        title: '2023년 12월 14일 18시 임시점검',
-        contents: '임시 점검 실시 예정입니다.',
-        view_count: 121,
+        title: '2023.12.17 21시22분 긴급 점검 공지',
+        contents: '2023.12.17 21시22분 긴급 점검진행 예정입니다.',
+        view_count: 1113,
         ip_address: '111.111.111.11',
         is_display_code: 1,
-        reg_date: '2023-12-13',
-        reg_member_id: 'myjeong19',
+        reg_date: '2023-12-17',
+        reg_member_id: 'admin',
       },
       {
         article_id: 2,
         board_type_code: 2,
-        title: '안녕하세요 정민영입니다.',
-        contents: '환영합니다.',
-        view_count: 1,
-        ip_address: '111.111.111.11',
+        title: '갈비찜을 밥 위에 얹어주세요.',
+        contents:
+          '갈비찜을 밥 위에 얹어주세요. </br> 내가 좋아하는 갈비찜 덮밥 아아~ 아아~ 냠냠!',
+        view_count: 20,
+        ip_address: '222.111.124.44',
         is_display_code: 0,
+        reg_date: '2023-12-17',
+        reg_member_id: 'myjeong19',
+      },
+      {
+        article_id: 3,
+        board_type_code: 2,
+        title: '안녕하세요 정민영입니다.',
+        contents: '반갑습니다.',
+        view_count: 30,
+        ip_address: '123.111.124.44',
+        is_display_code: 1,
         reg_date: '2023-12-14',
         reg_member_id: 'myjeong19',
       },
     ];
 
-    apiResult.code = 200;
-    apiResult.data = [...articles];
-    apiResult.result = 'OK';
-  } catch (error) {
-    // console.log(error.message)
-    // 서버측 에러코트는 사용자에게 직접 제공하지 않고 대표 메시지를 안내한다.
-    // 에러코드는 추후 별도 로깅 시스템 구현을 통해 서버에 특정 폴더내에 로그 파일 기록 혹은,
-    // 에러발생 알림 시스템(sms,email)을 통해 실시간 에러 정보를 노티한다.
-    apiResult.code = 500;
-    apiResult.date = null;
-    apiResult.result = 'FAILED';
+    //프론트엔드로 반환할 실제데이터 바인딩
+    apiResult = new ApiResult(200, articles, 'OK');
+  } catch (err) {
+    /**서버측 에러코드는 프론트엔드나 사용자에게 직접적인 정보를 제공하지 않고,
+     *추후 별도 로깅시스템 구현을 통해 서버에 특정폴더내에 로그파일로 기록하거나
+     *백엔드 에러발생 알림 시스템(sms,email등등)을 통해 실시간 에러정보를 노티해줌
+     */
+    apiResult = new ApiResult(500, null, 'FAILED');
   }
 
   res.json(apiResult);
 });
 
-// 신규 게시글 등록 처리
+//신규 게시글 등록처리
+//http://localhost:3000/api/article/create
 router.post('/create', async (req, res) => {
-  const apiResult = {
-    code: '200',
-    data: [],
-    result: 'OK',
-  };
+  //API라우팅 메소드 반환형식 정의
+  let apiResult;
 
   try {
-    const {
-      board_type_code,
-      title,
-      contents,
-      article_type_code,
-      is_display_code,
-      register,
-    } = req.body;
+    //STEP1 :프론트엔드에서 전달해준 신규 게시글 JSON데이터 추출
+    //STEP1 :사용자가 입력한 게시글 등록 데이터 추출
+    const boardTypeCode = req.body.boardTypeCode;
+    const title = req.body.title;
+    const contents = req.body.contents;
+    const articleTypeCode = req.body.articleTypeCode;
+    const isDisplayCode = req.body.isDisplayCode;
+    const register = req.body.register;
 
-    // STEP2: 추출된 사용자 입력데이터를 단일 게시글 json데이터로 구성해서, DB article테이블에 영구 저장 처리
+    /**
+     * STEP2 :출된 사용자 입력데이터를 단일 게시글 json데이터로 구성
+     * *DB article테이블에 영구적으로 저장 처리
+     * *저장처리후 article테이블에 저장된 데이터 반환
+     */
 
+    //등록할 게시글 데이터
     const article = {
-      board_type_code,
+      boardTypeCode,
       title,
       contents,
-      article_type_code,
-      is_display_code,
+      articleTypeCode,
+      isDisplayCode,
       register,
-      regist_date: new Date(),
+      registDate: new Date(),
     };
 
+    //STEP2 :B article 테이블에 데이터를 등록하고 등록된 데이터가 반환된다.
     const savedArticle = {
-      board_type_code: '1',
-      title: '긴급 점검',
-      contents: 'TEST!!! TEST!!! TEST!!!',
-      article_type_code: '1',
-      is_display_code: '1',
-      register: 'myjeong19',
-      regist_date: new Date(),
+      article_id: 1,
+      board_type_code: 1,
+      title: '2023.12.17 21시22분 긴급 점검 공지',
+      contents: '2023.12.17 21시22분 긴급 점검진행 예정입니다.',
+      view_count: 1113,
+      ip_address: '111.111.111.11',
+      is_display_code: 1,
+      reg_date: '2023-12-17',
+      reg_member_id: 'admin',
     };
 
-    apiResult.code = 200;
-    apiResult.data = savedArticle;
-    apiResult.result = 'OK';
-  } catch (error) {
-    apiResult.code = 500;
-    apiResult.data = null;
-    apiResult.result = 'FAILED';
+    //STEP3 :정상 데이터 등록처리 결과값 세팅하기
+
+    apiResult = new ApiResult(200, savedArticle, 'OK');
+  } catch (err) {
+    apiResult = new ApiResult(500, null, 'FAILED');
   }
 
   res.json(apiResult);
 });
 
-// 단일 게시글 수정 처리
+//단일 게시글 수정처리
+//http://localhost:3000/api/article/update
 router.post('/update', async (req, res) => {
-  const apiResult = {
-    code: '200',
-    data: [],
-    result: 'OK',
-  };
+  //API라우팅 메소드 반환형식 정의
+  let apiResult;
 
   try {
+    //STEP1 :사용자가 수정한 게시글 수정 데이터 추출
     const articleIdx = req.body.articleIdx;
-    let {
-      board_type_code,
-      title,
-      contents,
-      article_type_code,
-      is_display_code,
-      register,
-    } = req.body;
 
-    // STEP2: 추출된 사용자 입력데이터를 단일 게시글 json데이터로 구성해서, DB article테이블에 영구 저장 처리
+    const boardTypeCode = req.body.boardTypeCode;
+    const title = req.body.title;
+    const contents = req.body.contents;
+    const articleTypeCode = req.body.articleTypeCode;
+    const isDisplayCode = req.body.isDisplayCode;
+    const register = req.body.register;
 
-    let article = {
+    /**STEP2 :출된 사용자 수정데이터를 단일 게시글 json데이터로 구성해,
+     *DB article테이블에  수정 처리 반영
+     *수정처리후 적용건수 반환
+     */
+
+    //수정할 게시글 데이터
+    const article = {
       articleIdx,
-      board_type_code,
+      boardTypeCode,
       title,
       contents,
-      article_type_code,
-      is_display_code,
+      articleTypeCode,
+      isDisplayCode,
       register,
-      regist_date: new Date(),
+      registDate: new Date(),
     };
 
-    let affectedCnt = 1;
-    apiResult.code = 200;
-    apiResult.data = affectedCnt;
-    apiResult.result = 'OK';
-  } catch (error) {
-    apiResult.code = 500;
-    apiResult.data = null;
-    apiResult.result = 'FAILED';
+    //STEP2 :수정처리후 처리건수가 반환됨
+    //db수정처리함 처리후 적용건수 1이 반환되었다고 가정
+    const affectedCnt = 1;
+
+    //STEP3 :정상 수정된 정보를 apiResult객체 바인딩
+    apiResult = new ApiResult(200, affectedCnt, 'OK');
+  } catch (err) {
+    apiResult = new ApiResult(500, null, 'FAILED');
   }
 
   res.json(apiResult);
 });
 
-// 단일 게시글 목록 데이터 조회
+//단일 게시글 데이터 조회
+//http://localhost:3000/api/article/1
 router.get('/:aidx', async (req, res) => {
-  const apiResult = {
-    code: '200',
-    data: [],
-    result: 'OK',
-  };
+  //API라우팅 메소드 반환형식 정의
+  let apiResult;
 
   try {
-    // STEP1 :URL을 통해 전달된 게시글 고유 번호 추출
+    //STEP1 :URL을 통해 전달된 게시글 고유번호를 추출
     const articleIdx = req.params.aidx;
-    // STEP2 :게시글 고유번호에 해당하는 단일 게시글 정보를 DB에서 조회
 
-    const savedArticle = {
-      board_type_code: '1',
-      title: '긴급 점검',
-      contents: 'TEST!!! TEST!!! TEST!!!',
-      article_type_code: '1',
-      is_display_code: '1',
-      register: 'myjeong19',
-      regist_date: new Date(),
+    //STEP2 :게시글 고유번호에 해당하는 단일 게시글 정보를 DB에서 조회
+    const article = {
+      article_id: 1,
+      board_type_code: 1,
+      title: '2023.12.17 21시22분 긴급 점검 공지',
+      contents: '2023.12.17 21시22분 긴급 점검진행 예정입니다.',
+      view_count: 1113,
+      ip_address: '111.111.111.11',
+      is_display_code: 1,
+      reg_date: '2023-12-17',
+      reg_member_id: 'admin',
     };
 
-    apiResult.code = 200;
-    apiResult.data = savedArticle;
-    apiResult.result = 'OK';
-  } catch (error) {
-    apiResult.code = 500;
-    apiResult.data = null;
-    apiResult.result = 'FAILED';
+    //STEP3 :정상 조회된 정보를 apiResult객체 바인딩함
+    apiResult = new ApiResult(200, article, 'OK');
+  } catch (err) {
+    apiResult = new ApiResult(500, null, 'FAILED');
   }
 
   res.json(apiResult);
 });
 
-// 단일 게시글 삭제
+//단일 게시글 삭제처리
+//http://localhost:3000/api/article/1
 router.delete('/:aidx', async (req, res) => {
-  const apiResult = {
-    code: '200',
-    data: [],
-    result: 'OK',
-  };
+  //API라우팅 메소드 반환형식 정의
 
   try {
-    // STEP1 :URL을 통해 전달된 게시글 고유 번호 추출
+    //STEP1 :URL주소에서 게시글 고유번호 추출
     const articleIdx = req.params.aidx;
-    // STEP2 :DB의 article 테이블에서 해당 게시글 번호글을 삭제 처리
 
-    // STEP3 :DB에서 삭제된 건수 전달
+    //STEP2 :DB의 article테이블에서 해당 게시글 번호글 삭제처리
+
+    //STEP3 :DB에서 삭제된 건수가 전달된다.
     const deletedCnt = 1;
 
-    // STEP4 :정상 삭제된 정보 할당
-    apiResult.code = 200;
-    apiResult.data = deletedCnt;
-    apiResult.result = 'OK';
-  } catch (error) {
-    apiResult.code = 500;
-    apiResult.data = null;
-    apiResult.result = 'FAILED';
+    //STEP4 :정상 삭제된 정보를 apiResult객체 바인딩
+    apiResult = new ApiResult(200, deletedCnt, 'OK');
+  } catch (err) {
+    apiResult = new ApiResult(500, null, 'FAILED');
   }
 
   res.json(apiResult);
