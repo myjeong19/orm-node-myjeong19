@@ -194,6 +194,7 @@ router.get('/:aidx', async (req, res) => {
       view_count: 1113,
       ip_address: '111.111.111.11',
       is_display_code: 1,
+      article_type_code: 1,
       reg_date: '2023-12-17',
       reg_member_id: 'admin',
     };

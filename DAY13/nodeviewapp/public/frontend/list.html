@@ -137,7 +137,7 @@
                       id="boardTypeCode"
                       class="form-control"
                     >
-                      <option value="0">전체</option>
+                      <option value="9">전체</option>
                       <option value="1">공지게시판</option>
                       <option value="2">자유 게시판</option>
                     </select>
@@ -178,7 +178,7 @@
                 >
                   조회
                 </button>
-                <a href="/article/create" class="btn btn-outline-primary"
+                <a href="/frontend/create.html" class="btn btn-outline-primary"
                   >신규</a
                 >
               </div>
@@ -240,13 +240,16 @@
       const onData = () => {
         // jQuery AJAX GET
         $.get('http://localhost:3000/api/article/all', result => {
-          console.log(result);
+          /** reulst는 MVP에서 백엔드에서 가져온 클라이언트 데이터 모델
+           * 백엔드에서 가져온 클라이언트 모델인 게시글 목록 데이터를 일일이
+           * 각각 UI요소에 바인딩 처리 작업을 Presenter라고 한다.
+           */
           $.each(result.data, (i, item) => {
             const elementTr = `
             <tr>
               <td>${item.article_id}</td>
               <td>${item.board_type_code}</td>
-              <td><a href='/article/modify/${item.article_id}'>${item.title}</a></td>
+              <td><a href="/frontend/modify.html?aid=${item.article_id}">${item.title}</a></td>
               <td>${item.view_count}</td>
               <td>${item.ip_address}</td>
               <td>${item.is_display_code}</td>
@@ -254,8 +257,6 @@
             </tr>`;
 
             $('#list').append(elementTr);
-
-            console.log(item);
           });
         });
       };
