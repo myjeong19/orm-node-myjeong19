@@ -57,7 +57,7 @@
     </div>
     <div class="text-center">
       <button type="button" class="btn btn-primary">조회</button>
-      <a href="/member/create" class="btn btn-info">신규</a>
+      <a href="/article/create" class="btn btn-info">신규</a>
     </div>
   </div>
 
@@ -69,12 +69,12 @@
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th width="10%">이메일</th>
-                  <th width="5%">이름</th>
-                  <th width="10%">프로필 이미지</th>
-                  <th width="10%">전화번호</th>
-                  <th width="10%">생년월일</th>
-                  <th width="5%">가입 상태</th>
+                  <th width="10%">게시글 고유번호</th>
+                  <th width="5%">게시판 구분 코드</th>
+                  <th width="10%">글 제목</th>
+                  <th width="10%">글 내용</th>
+                  <th width="10%">조회수</th>
+                  <th width="5%">IP주소</th>
                   <th width="10%">등록일시</th>
                   <th width="10%">등록자 고유 번호</th>
                   <th width="10%">수정일시</th>
@@ -82,22 +82,24 @@
                 </tr>
               </thead>
               <tbody class="hoverTblBody">
+                <% for (let i = 0; i < articleList.length; i ++) { %>
                 <tr>
                   <td>
-                    <a href=""></a>
+                    <a href="/article/modify/<%= articleList[i].article_id %>"
+                      ><%= articleList[i].article_id %></a
+                    >
                   </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-
-                  <td>가입</td>
-
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <td><%= articleList[i].board_type_code %></td>
+                  <td><%= articleList[i].title %></td>
+                  <td><%= articleList[i].contents %></td>
+                  <td><%= articleList[i].view_count %></td>
+                  <td><%= articleList[i].ip_address %></td>
+                  <td><%= articleList[i].reg_date %></td>
+                  <td><%= articleList[i].reg_member_id %></td>
+                  <td><%= articleList[i].edit_date %></td>
+                  <td><%= articleList[i].edit_member_id %></td>
                 </tr>
+                <% } %>
               </tbody>
             </table>
           </div>
