@@ -57,7 +57,7 @@
     </div>
     <div class="text-center">
       <button type="button" class="btn btn-primary">조회</button>
-      <a href="/member/create" class="btn btn-info">신규</a>
+      <a href="/message/create" class="btn btn-info">신규</a>
     </div>
   </div>
 
@@ -69,35 +69,38 @@
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th width="10%">이메일</th>
-                  <th width="5%">이름</th>
-                  <th width="10%">프로필 이미지</th>
-                  <th width="10%">전화번호</th>
-                  <th width="10%">생년월일</th>
-                  <th width="5%">가입 상태</th>
-                  <th width="10%">등록일시</th>
-                  <th width="10%">등록자 고유 번호</th>
+                  <th width="10%">채널 고유번호</th>
+                  <th width="5%">사용자 고유번호</th>
+                  <th width="10%">사용자 닉네임</th>
+                  <th width="10%">사용자 유형</th>
+                  <th width="10%">접속 상태코드</th>
+                  <th width="10%">최근 아웃 일시</th>
+                  <th width="10%">커넥션 아이디</th>
+                  <th width="10%">아이피 주소</th>
                   <th width="10%">수정일시</th>
-                  <th width="10%">수정자 고유 번호</th>
+                  <th width="10%">수정자 고유번호</th>
                 </tr>
               </thead>
               <tbody class="hoverTblBody">
+                <% for (let i = 0; i < channelMember.length; i ++) { %>
+
                 <tr>
                   <td>
-                    <a href=""></a>
+                    <a href="<%= channelMember[i].channel_msg_id %>"
+                      ><%= channelMember[i].channel_msg_id %></a
+                    >
                   </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-
-                  <td>가입</td>
-
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <td><%= channelMember[i].member_id %></td>
+                  <td><%= channelMember[i].nick_name %></td>
+                  <td><%= channelMember[i].member_type_code %></td>
+                  <td><%= channelMember[i].last_contact_date %></td>
+                  <td><%= channelMember[i].last_out_date %></td>
+                  <td><%= channelMember[i].connection_id %></td>
+                  <td><%= channelMember[i].ip_address %></td>
+                  <td><%= channelMember[i].edit_date %></td>
+                  <td><%= channelMember[i].edit_member_id %></td>
                 </tr>
+                <% } %>
               </tbody>
             </table>
           </div>
