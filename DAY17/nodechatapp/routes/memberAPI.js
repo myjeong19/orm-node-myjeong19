@@ -17,43 +17,63 @@ const memberList = [
 ];
 
 router.get('/all', async (req, res, next) => {
-  res.json(memberList);
+  try {
+    res.json(memberList);
+  } catch (error) {
+    console.log('ERROR: 에러가 발생했습니다 관리자에게 문의하세요.');
+  }
 });
 
 router.post('/create', async (req, res, next) => {
   const { member_id, user_id, name, age } = req.body;
 
-  const newMember = {
-    member_id,
-    user_id,
-    name,
-    age,
-  };
-  const updatedMemberList = [...memberList, newMember];
+  try {
+    const newMember = {
+      member_id,
+      user_id,
+      name,
+      age,
+    };
+    const updatedMemberList = [...memberList, newMember];
 
-  res.json(updatedMemberList);
+    res.json(updatedMemberList);
+  } catch (error) {
+    console.log('ERROR: 에러가 발생했습니다 관리자에게 문의하세요.');
+  }
 });
 
 router.post('/modify', async (req, res, next) => {
-  const getMember = memberList.find(
-    member => member.member_id == req.body.member_id
-  );
+  try {
+    const getMember = memberList.find(
+      member => member.member_id == req.body.member_id
+    );
 
-  res.json(getMember);
+    res.json(getMember);
+  } catch (error) {
+    console.log('ERROR: 에러가 발생했습니다 관리자에게 문의하세요.');
+  }
 });
 
 router.post('/delete', async (req, res, next) => {
-  const updatedmemberList = memberList.filter(
-    member => member.member_id !== req.body.member_id
-  );
+  try {
+    const updatedmemberList = memberList.filter(
+      member => member.member_id !== req.body.member_id
+    );
 
-  res.json(updatedmemberList);
+    res.json(updatedmemberList);
+  } catch (error) {
+    console.log('ERROR: 에러가 발생했습니다 관리자에게 문의하세요.');
+  }
 });
 
 router.get('/:id', async (req, res, next) => {
   const findId = req.params.id;
 
-  res.json(memberList[findId]);
+  try {
+    res.json(memberList[findId]);
+  } catch (error) {
+    console.log('ERROR: 에러가 발생했습니다 관리자에게 문의하세요.');
+  }
 });
 
 module.exports = router;

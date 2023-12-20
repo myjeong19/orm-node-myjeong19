@@ -44,7 +44,11 @@ const channelList = [
 ];
 
 router.get('/all', async (req, res, next) => {
-  res.json(channelList);
+  try {
+    res.json(channelList);
+  } catch (error) {
+    console.log('ERROR: 에러가 발생했습니다 관리자에게 문의하세요.');
+  }
 });
 
 router.post('/create', async (req, res, next) => {
@@ -77,31 +81,48 @@ router.post('/create', async (req, res, next) => {
     edit_member_id,
     edit_date: new Date(),
   };
-  const updatedChannelList = [...channelList, newChannel];
 
-  res.json(updatedChannelList);
+  try {
+    const updatedChannelList = [...channelList, newChannel];
+
+    res.json(updatedChannelList);
+  } catch (error) {
+    console.log('ERROR: 에러가 발생했습니다 관리자에게 문의하세요.');
+  }
 });
 
-router.post('/modify', async (req, res, next) => {
-  const getChannel = channelList.find(
-    channel => channel.channel_id !== req.body.channel_id
-  );
+router.get('/modify/:id', async (req, res, next) => {
+  try {
+    const findId = req.params.id;
 
-  res.json(getChannel);
+    res.json(channelList[findId]);
+  } catch (error) {
+    console.log('ERROR: 에러가 발생했습니다 관리자에게 문의하세요.');
+  }
+});
+
+router.post('/modify/:id', async (req, res, next) => {
+  try {
+    const getChannel = channelList.find(
+      channel => channel.channel_id !== req.body.channel_id
+    );
+
+    res.json(getChannel);
+  } catch (error) {
+    console.log('ERROR: 에러가 발생했습니다 관리자에게 문의하세요.');
+  }
 });
 
 router.post('/delete', async (req, res, next) => {
-  const updatedChannelList = channelList.filter(
-    channel => channel.channel_id == req.body.channel_id
-  );
+  try {
+    const updatedChannelList = channelList.filter(
+      channel => channel.channel_id == req.body.channel_id
+    );
 
-  res.json(updatedChannelList);
-});
-
-router.get('/:id', async (req, res, next) => {
-  const findId = req.params.id;
-
-  res.json(channelList[findId]);
+    res.json(updatedChannelList);
+  } catch (error) {
+    console.log('ERROR: 에러가 발생했습니다 관리자에게 문의하세요.');
+  }
 });
 
 module.exports = router;
