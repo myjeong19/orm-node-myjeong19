@@ -51,7 +51,9 @@ router.post('/delete', async (req, res, next) => {
 });
 
 router.get('/:id', async (req, res, next) => {
-  res.json(memberList[req.params.id]);
+  const findId = req.params.id;
+
+  res.json(memberList[findId]);
 });
 
 module.exports = router;

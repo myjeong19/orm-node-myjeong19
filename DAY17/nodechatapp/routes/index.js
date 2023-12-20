@@ -11,7 +11,7 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/entry', async (req, res, next) => {
-  res.render('entry', { layout: 'layout/authLayout' });
+  res.render('entry', { layout: 'layout /authLayout' });
 });
 
 router.post('/entry', async (req, res) => {
