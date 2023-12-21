@@ -23,6 +23,16 @@ router.get('/find', async (req, res, next) => {
 });
 
 router.post('/find', async (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  const newUser = {
+    email,
+    password,
+  };
+
+  console.log(newUser);
+
   res.redirect('login');
 });
 
