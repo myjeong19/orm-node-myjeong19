@@ -68,7 +68,7 @@ router.post('/delete', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   const findId = req.params.id;
-
+  console.log(req.params);
   try {
     res.json(memberList[findId]);
   } catch (error) {
