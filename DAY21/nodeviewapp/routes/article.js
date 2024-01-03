@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models/index');
 const { Op } = db.Sequelize.Op;
+const sequelize = db.sequelize;
+const { QueryTypes } = sequelize;
 
 //게시글 목록 조회
 //http://localhost:/article/list
@@ -15,25 +17,44 @@ router.get('/list', async (req, res) => {
 
   //STEP1 :DB에서 모든 게시글 데이터 목록을 조회
   // ㄴSELECT article_id FOROM article WHRE is
-  var articles = await db.Article.findAll({
-    attributes: [
-      'article_id',
-      'board_type_code',
-      'title',
-      'article_type_code',
-      'view_count',
-      'is_display_code',
-      'reg_member_id',
-    ],
-    where: {
-      is_display_code: 1,
-      // view_count: { [Op.not]: 0 }
-    },
-    order: [['article_id', 'DESC']],
-  });
+  // var articles = await db.Article.findAll({
+  //   attributes: [
+  //     'article_id',
+  //     'board_type_code',
+  //     'title',
+  //     'article_type_code',
+  //     'view_count',
+  //     'is_display_code',
+  //     'reg_member_id',
+  //   ],
+  //   where: {
+  //     is_display_code: 1,
+  //     // view_count: { [Op.not]: 0 }
+  //   },
+  //   order: [['article_id', 'DESC']],
+  // });
+
+  // const sqlQuery = `SELECT article_id,board_type_code,title,article_type_code,view_count,ip_address,is_display_code,reg_date,reg_member_id
+  // FROM article
+  // WHERE is_display_code = 1
+  // ORDER BY article_id DESC;
+  // `;
+
+  var articles = await sequelize.query(
+    'CALL SP_CHAT_ARTICLE_DISPLAY (:P_DISPLAY_CODE)',
+    { replacements: { P_DISPLAY_CODE: searchOption.isDisplayCode } }
+  );
+
+  // const articles = await sequelize.query(sqlQuery, {
+  //   raw: true,
+  //   type: QueryTypes.SELECT,
+  // });
+
+  // SELECT COUNT(*) FROM Articles
+  const articleCount = await db.Article.count();
 
   //STEP2 : 게시글 전체 목록을 list.ejs뷰에 전달
-  res.render('article/list', { articles, searchOption });
+  res.render('article/list', { articles, searchOption, articleCount });
 });
 
 // 게시글 목록에서 조회옵션 데이터를 전달 받아
@@ -57,8 +78,10 @@ router.post('/list', async (req, res) => {
     where: { board_type_code: searchOption.boardTypeCode },
   });
 
+  const articleCount = await db.Article.count();
+
   //STEP3 ) 게시글 목록 페이지 list.ejs에 데이터 목록을 전달
-  res.render('article/list', { articles, searchOption });
+  res.render('article/list', { articles, searchOption, articleCount });
 });
 
 //신규 게시글 등록

@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../models/index');
 
 router.get('/list', async (req, res) => {
-  const admins = await db.Admin.findAll({
+  const admins = await db.AdminMember.findAll({
     attributes: [
       'admin_member_id',
       'company_code',
@@ -34,21 +34,21 @@ router.post('/list', async (req, res) => {
 
   try {
     if (admin_name) {
-      const admins = await db.Admin.findAll({
+      const admins = await db.AdminMember.findAll({
         where: { admin_name: searchOption.admin_name },
       });
       res.render('admin/list', { admins });
     }
 
     if (admin_id) {
-      const admins = await db.Admin.findAll({
+      const admins = await db.AdminMember.findAll({
         where: { admin_id: searchOption.admin_id },
       });
       res.render('admin/list', { admins });
     }
 
     if (used_yn_code) {
-      const admins = await db.Admin.findAll({
+      const admins = await db.AdminMember.findAll({
         where: { used_yn_code: searchOption.used_yn_code },
       });
       res.render('admin/list', { admins });
@@ -87,7 +87,7 @@ router.post('/create', async (req, res) => {
     edit_date: null,
   };
 
-  await db.Admin.create(newAdmin);
+  await db.AdminMember.create(newAdmin);
 
   res.redirect('list');
 });
@@ -99,7 +99,7 @@ router.get('/delete', async (req, res) => {
 router.get('/modify/:id', async (req, res) => {
   const adminIndex = req.params.id;
 
-  const admin = await db.Admin.findOne({
+  const admin = await db.AdminMember.findOne({
     where: { admin_member_id: adminIndex },
   });
 
@@ -107,7 +107,45 @@ router.get('/modify/:id', async (req, res) => {
 });
 
 router.post('/modify/:id', async (req, res) => {
-  res.redirect('list');
+  const adminIndex = req.params.id;
+  const {
+    admin_member_id,
+    company_code,
+    admin_id,
+    used_yn_code,
+    admin_name,
+    telephone,
+    reg_user_id,
+    reg_date,
+    edit_user,
+    edit_date,
+    action,
+  } = req.body;
+
+  console.log(reg_date);
+
+  if (action === 'save') {
+    const updateAdmin = {
+      admin_member_id,
+      company_code,
+      admin_id,
+      used_yn_code,
+      admin_name,
+      telephone,
+      reg_user_id,
+      reg_date,
+      edit_user,
+      edit_date,
+    };
+
+    await db.AdminMember.update(updateAdmin, {
+      where: { admin_member_id: adminIndex },
+    });
+  } else {
+    await db.AdminMember.destroy({ where: { admin_member_id: adminIndex } });
+  }
+
+  res.redirect('/admin/list');
 });
 
 module.exports = router;
