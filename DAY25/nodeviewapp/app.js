@@ -8,7 +8,6 @@ const connect = require('./schemas/index');
 connect();
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
 var articleRouter = require('./routes/article');
 var articleAPIRouter = require('./routes/articleAPI');
@@ -32,7 +31,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 app.use('/article', articleRouter);
 app.use('/api/article', articleAPIRouter);

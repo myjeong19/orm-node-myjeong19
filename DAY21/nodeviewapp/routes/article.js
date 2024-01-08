@@ -146,6 +146,11 @@ router.get('/modify/:aid', async (req, res) => {
     where: { article_id: articleIdx },
   });
 
+  article.comments = [
+    { coment_id: 1, comment: '123' },
+    { coment_id: 1, comment: '123' },
+  ];
+
   //STEP3 : 단일 게시글 정보르 뷰에 전달
   res.render('article/modify.ejs', { article });
 });

@@ -62,12 +62,6 @@ router.post('/create', async (req, res) => {
   res.redirect('list');
 });
 
-router.get('/delete:id', async (req, res) => {
-  const selectedAdminMemberId = req.query.id;
-  await Admin.deleteOne({ admin_member_id: selectedAdminMemberId });
-  res.redirect('/admin/list');
-});
-
 router.get('/modify/:id', async (req, res) => {
   const selectedAdminMemberId = req.params.id;
 
