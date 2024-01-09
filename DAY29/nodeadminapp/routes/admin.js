@@ -15,7 +15,7 @@ router.get('/list', async (req, res, next) => {
   };
 
   const sqlQuery = `SELECT 
-    company_code,admin_id,admin_member_password,admin_name,
+    admin_member_id, company_code,admin_id,admin_member_password,admin_name,
     CONVERT(AES_DECRYPT(UNHEX(email),'${process.env.MYSQL_AES_KEY}')USING utf8) as email,
     CONVERT(AES_DECRYPT(UNHEX(telephone),'${process.env.MYSQL_AES_KEY}')USING utf8) as telephone,
     dept_name,used_yn_code,reg_date,reg_member_id 
@@ -99,6 +99,7 @@ router.get('/modify/:id', async (req, res, next) => {
       selectAdmin.telephone,
       process.env.MYSQL_AES_KEY
     );
+
     res.render('admin/modify', { selectAdmin });
   } catch (error) {
     console.log(error);
