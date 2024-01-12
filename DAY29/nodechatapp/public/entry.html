@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Meta -->
+    <meta name="description" content="Quick Chat App" />
+    <meta name="author" content="ParkerThemes" />
+    <link rel="shortcut icon" href="img/fav.png" />
+
+    <!-- Title -->
+    <title>Quick Chat App</title>
+
+    <!-- *************
+			************ Common Css Files *************
+		************ -->
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="css/main.css" />
+
+    <!-- *************
+			************ Vendor Css Files *************
+		************ -->
+  </head>
+  <body class="authentication">
+    <!-- *************
+			************ Login container start *************
+		************* -->
+    <div class="login-container">
+      <!-- Row start -->
+      <div class="row no-gutters h-100">
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+          <div class="login-about">
+            <div class="slogan">
+              <span>Design</span>
+              <span>Made</span>
+              <span>Simple.</span>
+            </div>
+            <div class="about-desc">
+              Quick Chat is an intelligent and communications tool, built for
+              teams. It provides an integrated platform that makes team
+              communication easy and efficient.
+            </div>
+            <a href="index.html" class="know-more"
+              >Know More <img src="img/right-arrow.svg"
+            /></a>
+          </div>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+          <div class="login-wrapper">
+            <form id="form-entry">
+              <div class="login-screen">
+                <div class="login-body">
+                  <a href="index.html" class="login-logo">
+                    <img src="img/logo.svg" alt="Quick Chat" />
+                  </a>
+                  <h6>Welcome to Quick Chat App,<br />Create your account.</h6>
+                  <div class="field-wrapper">
+                    <input
+                      type="text"
+                      autofocus
+                      id="profile_img_pass"
+                      name="profile_img_pass"
+                    />
+                    <div class="field-placeholder">profile_img_pass</div>
+                  </div>
+                  <div class="field-wrapper">
+                    <input type="email" autofocus id="email" name="email" />
+                    <div class="field-placeholder">Email ID</div>
+                  </div>
+                  <div class="field-wrapper">
+                    <input type="text" autofocus id="name" name="name" />
+                    <div class="field-placeholder">Name</div>
+                  </div>
+
+                  <div class="field-wrapper">
+                    <input
+                      type="text"
+                      autofocus
+                      id="telephone"
+                      name="telephone"
+                    />
+                    <div class="field-placeholder">telephone</div>
+                  </div>
+
+                  <div class="field-wrapper">
+                    <input
+                      type="text"
+                      autofocus
+                      id="birth_date"
+                      name="birth_date"
+                    />
+                    <div class="field-placeholder">Birth Date</div>
+                  </div>
+
+                  <div class="field-wrapper">
+                    <input type="password" id="password" name="password" />
+                    <div class="field-placeholder">Password</div>
+                  </div>
+                  <div class="field-wrapper mb-3">
+                    <input type="password" id="confirm-password" />
+                    <div class="field-placeholder">Confirm Password</div>
+                  </div>
+                  <div class="actions">
+                    <button type="submit" class="btn btn-primary ml-auto">
+                      Sign Up
+                    </button>
+                  </div>
+                </div>
+                <div class="login-footer">
+                  <span class="additional-link"
+                    >Have an account?
+                    <a href="login.html" class="btn btn-secondary"
+                      >Login</a
+                    ></span
+                  >
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- Row end -->
+    </div>
+    <!-- *************
+			************ Login container end *************
+		************* -->
+    <script src="/js/jquery.min.js"></script>
+    <script>
+      const handleForm = e => {
+        const email = $('#email');
+        const name = $('#name');
+        const password = $('#password');
+        const confirmPassword = $('#confirm-password');
+        const telephone = $('#telephone');
+        const birthDate = $('#birt_date');
+        const profileImgPath = $('#profile_img_path');
+
+        if (!email.val()) {
+          e.preventDefault();
+          alert('이메일을 입력해주세요');
+          email.focus();
+          return false;
+        }
+
+        if (!name.val()) {
+          e.preventDefault();
+          alert('이름을 입력해주세요');
+          name.focus();
+          return false;
+        }
+
+        if (!password.val()) {
+          e.preventDefault();
+          alert('패스워드를 입력해주세요');
+          password.focus();
+          return false;
+        }
+
+        if (password.val() !== confirmPassword.val()) {
+          e.preventDefault();
+          alert('비밀번호가 일치하지 않습니다.');
+          password.focus();
+          password.val('');
+          confirmPassword.val('');
+          return false;
+        }
+
+        const member = {
+          email: email.val(),
+          name: name.val(),
+          member_password: password.val(),
+          profile_img_path: profileImgPath.value(),
+          telephone: telephone.val(),
+          birth_date: birthDate.val(),
+        };
+
+        $.post('/api/member/entry', member).done(() => {
+          if (result.code == 200) {
+            alert('회원 가입 완료');
+            location.href = '/login.html';
+          } else {
+            alert('회원 가입 실패');
+          }
+        });
+
+        return false;
+      };
+
+      const formEntry = $('#form-entry');
+      formEntry.submit(handleForm);
+    </script>
+  </body>
+</html>

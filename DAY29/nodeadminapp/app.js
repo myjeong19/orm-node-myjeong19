@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+const layout = require('express-ejs-layouts');
 var logger = require('morgan');
 require('dotenv').config(); // 환경 설정 파일 호출 (전역 정보로 설정 됨)
 
@@ -32,7 +33,7 @@ app.set('layout extractScripts', true); //콘텐츠페이지내 script태그를 
 app.set('layout extractStyles', true); //콘텐츠페이지내 style태그를 레이아웃에 통합할지여부
 app.set('layout extractMetas', true); //콘텐츠페이지내 meta 태그를 레이아웃에 통합할지여부
 app.use(expressLayouts);
-
+app.use(layout);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

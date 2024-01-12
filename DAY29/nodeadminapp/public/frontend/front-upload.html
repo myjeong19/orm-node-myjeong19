@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>프론트 AJAX 파일 업로드 샘플</h1>
+    <form action="">
+      <label for="">파일 선택</label>
+      <input type="file" name="files" id="files" />
+    </form>
+
+    <script src="/js/jquery-3.1.1.min.js"></script>
+
+    <script>
+      const elementFiles = $('#files');
+
+      const handleFilesChange = () => {
+        const data = new FormData();
+        data.append('files', elementFiles[0].files[0]);
+        $.ajax({
+          data,
+          type: 'POST',
+          url: '/api/article/uploadS3',
+          cache: false,
+          content: false,
+          processData: false,
+          success: function (result) {
+            console.log(result);
+          },
+        });
+      };
+      elementFiles.change(handleFilesChange);
+    </script>
+  </body>
+</html>
