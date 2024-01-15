@@ -55,7 +55,7 @@
         </div>
         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
           <div class="login-wrapper">
-            <form id="form-entry">
+            <form id="entryForm">
               <div class="login-screen">
                 <div class="login-body">
                   <a href="index.html" class="login-logo">
@@ -63,51 +63,29 @@
                   </a>
                   <h6>Welcome to Quick Chat App,<br />Create your account.</h6>
                   <div class="field-wrapper">
-                    <input
-                      type="text"
-                      autofocus
-                      id="profile_img_pass"
-                      name="profile_img_pass"
-                    />
-                    <div class="field-placeholder">profile_img_pass</div>
-                  </div>
-                  <div class="field-wrapper">
-                    <input type="email" autofocus id="email" name="email" />
+                    <input type="email" id="email" autofocus />
                     <div class="field-placeholder">Email ID</div>
                   </div>
                   <div class="field-wrapper">
-                    <input type="text" autofocus id="name" name="name" />
+                    <input type="password" id="password" />
+                    <div class="field-placeholder">Password</div>
+                  </div>
+
+                  <div class="field-wrapper mb-3">
+                    <input type="password" id="passwordconfirm" />
+                    <div class="field-placeholder">Confirm Password</div>
+                  </div>
+
+                  <div class="field-wrapper mb-3">
+                    <input type="text" id="name" />
                     <div class="field-placeholder">Name</div>
                   </div>
 
-                  <div class="field-wrapper">
-                    <input
-                      type="text"
-                      autofocus
-                      id="telephone"
-                      name="telephone"
-                    />
-                    <div class="field-placeholder">telephone</div>
-                  </div>
-
-                  <div class="field-wrapper">
-                    <input
-                      type="text"
-                      autofocus
-                      id="birth_date"
-                      name="birth_date"
-                    />
-                    <div class="field-placeholder">Birth Date</div>
-                  </div>
-
-                  <div class="field-wrapper">
-                    <input type="password" id="password" name="password" />
-                    <div class="field-placeholder">Password</div>
-                  </div>
                   <div class="field-wrapper mb-3">
-                    <input type="password" id="confirm-password" />
-                    <div class="field-placeholder">Confirm Password</div>
+                    <input type="text" id="telephone" />
+                    <div class="field-placeholder">Telephone</div>
                   </div>
+
                   <div class="actions">
                     <button type="submit" class="btn btn-primary ml-auto">
                       Sign Up
@@ -132,70 +110,57 @@
     <!-- *************
 			************ Login container end *************
 		************* -->
-    <script src="/js/jquery.min.js"></script>
-    <script>
-      const handleForm = e => {
-        const email = $('#email');
-        const name = $('#name');
-        const password = $('#password');
-        const confirmPassword = $('#confirm-password');
-        const telephone = $('#telephone');
-        const birthDate = $('#birt_date');
-        const profileImgPath = $('#profile_img_path');
 
-        if (!email.val()) {
-          e.preventDefault();
-          alert('이메일을 입력해주세요');
+    <script src="/js/jquery.min.js"></script>
+
+    <script>
+      const entryForm = $('#entryForm');
+
+      const handleSubmit = () => {
+        const email = $('#email');
+        const password = $('#password');
+        const name = $('#name');
+        const telephone = $('#telephone');
+
+        if (email.val() == '') {
+          alert('메일주소를 입력해주세요.');
           email.focus();
           return false;
         }
 
-        if (!name.val()) {
-          e.preventDefault();
-          alert('이름을 입력해주세요');
-          name.focus();
-          return false;
-        }
-
-        if (!password.val()) {
-          e.preventDefault();
-          alert('패스워드를 입력해주세요');
-          password.focus();
-          return false;
-        }
-
-        if (password.val() !== confirmPassword.val()) {
-          e.preventDefault();
-          alert('비밀번호가 일치하지 않습니다.');
-          password.focus();
-          password.val('');
-          confirmPassword.val('');
-          return false;
-        }
-
-        const member = {
+        //AJAX로 사용자 회원가입 기능 구현-백엔드 RESTful과 연동처리함
+        var member = {
           email: email.val(),
+          password: password.val(),
           name: name.val(),
-          member_password: password.val(),
-          profile_img_path: profileImgPath.value(),
           telephone: telephone.val(),
-          birth_date: birthDate.val(),
         };
 
-        $.post('/api/member/entry', member).done(() => {
-          if (result.code == 200) {
-            alert('회원 가입 완료');
-            location.href = '/login.html';
-          } else {
-            alert('회원 가입 실패');
+        $.post('/api/member/entry', member).done(result => {
+          // console.log('백엔드에서 전달된 회원가입결과값: ', result);
+
+          switch (result.code) {
+            case 200:
+              alert('회원등록완료');
+              location.href = '/login.html';
+              break;
+
+            case 400:
+              alert('회원가입 실패하였습니다.');
+              break;
+
+            default:
+              result.resultMsg === 'ExistDoubleEmail'
+                ? alert('동일한 메일주소가 존재합니다.')
+                : alert('회원가입 실패하였습니다.');
+              break;
           }
         });
 
         return false;
       };
 
-      const formEntry = $('#form-entry');
-      formEntry.submit(handleForm);
+      entryForm.submit(handleSubmit);
     </script>
   </body>
 </html>

@@ -1,56 +1,37 @@
-<style></style>
-
 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
   <div class="login-wrapper">
-    <form action="/entry" method="post">
+    <form action="/entry" method="post" id="entryForm">
       <div class="login-screen">
         <div class="login-body">
           <a href="index.html" class="login-logo">
             <img src="img/logo.svg" alt="Quick Chat" />
           </a>
           <h6>Welcome to Quick Chat App,<br />Create your account.</h6>
-
-          <div class="row">
-            <div class="field-wrapper col-6">
-              <input type="name" autofocus name="name" id="name" />
-              <div class="field-placeholder">이름</div>
-            </div>
-
-            <div class="field-wrapper col-6">
-              <input
-                type="birth_date"
-                autofocus
-                name="birth_date"
-                id="birth_date"
-              />
-              <div class="field-placeholder">생년월일</div>
-            </div>
-          </div>
-
           <div class="field-wrapper">
-            <input type="telephone" autofocus name="telephone" id="telephone" />
-            <div class="field-placeholder">전화번호</div>
-          </div>
-
-          <div class="field-wrapper">
-            <input type="email" autofocus name="email" id="email" />
+            <input type="email" name="email" id="email" autofocus />
             <div class="field-placeholder">Email ID</div>
           </div>
-
           <div class="field-wrapper">
             <input type="password" name="password" id="password" />
             <div class="field-placeholder">Password</div>
           </div>
           <div class="field-wrapper mb-3">
-            <input type="password" id="password_check" />
+            <input type="password" id="confirmpassword" />
             <div class="field-placeholder">Confirm Password</div>
           </div>
+
+          <div class="field-wrapper mb-3">
+            <input type="text" id="name" name="name" />
+            <div class="field-placeholder">Name</div>
+          </div>
+
+          <div class="field-wrapper mb-3">
+            <input type="text" id="telephone" />
+            <div class="field-placeholder">Telephone</div>
+          </div>
+
           <div class="actions">
-            <button
-              type="submit"
-              class="btn btn-primary ml-auto"
-              id="sign-up-button"
-            >
+            <button type="submit" class="btn btn-primary ml-auto">
               Sign Up
             </button>
           </div>
@@ -58,52 +39,59 @@
         <div class="login-footer">
           <span class="additional-link"
             >Have an account?
-            <a href="/" class="btn btn-secondary">Login</a></span
+            <a href="login.html" class="btn btn-secondary">Login</a></span
           >
         </div>
       </div>
     </form>
   </div>
 </div>
-
 <script>
-  const signUpButton = document.getElementById('sign-up-button');
+  const entryForm = $('#entryForm');
 
-  const handleSignUp = e => {
-    const email = document.getElementById('email');
-    const password = document.getElementById('password');
-    const passwordCheck = document.getElementById('password_check');
+  const handleSubmit = () => {
+    const email = $('#email');
+    const password = $('#password');
+    const name = $('#name');
+    const telephone = $('#telephone');
 
-    if (email.value === '') {
-      e.preventDefault();
-      alert('이메일을 입력해주세요.');
+    if (email.val() == '') {
+      alert('메일주소를 입력해주세요.');
       email.focus();
       return false;
     }
 
-    if (password.value === '') {
-      e.preventDefault();
-      alert('비밀번호를 입력해주세요.');
-      password.focus();
-      return false;
-    }
+    //AJAX로 사용자 회원가입 기능 구현-백엔드 RESTful과 연동처리함
+    var member = {
+      email: email.val(),
+      password: password.val(),
+      name: name.val(),
+      telephone: telephone.val(),
+    };
 
-    if (passwordCheck.value === '') {
-      e.preventDefault();
-      alert('비밀번호를 확인해주세요.');
-      passwordCheck.focus();
-      return false;
-    }
+    $.post('/api/member/entry', member).done(result => {
+      // console.log('백엔드에서 전달된 회원가입결과값: ', result);
 
-    if (!(password.value === passwordCheck.value)) {
-      e.preventDefault();
-      alert('비밀번호가 일치하지 않습니다.');
-      password.focus();
+      switch (result.code) {
+        case 200:
+          alert('회원등록완료');
+          location.href = '/login.html';
+          break;
 
-      password.value = '';
-      passwordCheck.value = '';
-    }
+        case 400:
+          alert('회원가입 실패하였습니다.');
+          break;
+
+        default:
+          result.resultMsg === 'ExistDoubleEmail'
+            ? alert('동일한 메일주소가 존재합니다.')
+            : alert('회원가입 실패하였습니다.');
+          break;
+      }
+    });
+
+    return false;
   };
 
-  signUpButton.addEventListener('click', handleSignUp);
+  entryForm.submit(handleSubmit);
 </script>
