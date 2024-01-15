@@ -2,7 +2,7 @@ const multer = require('multer');
 const multerS3 = require('multer-s3');
 const AWS = require('aws-sdk');
 
-// 파일명 기반 파일 확장자 조회 함수
+//파일명 기반 파일 확장자 조회함수
 function getExtention(fileName) {
   if (fileName == '') return '';
   var arrFileName = fileName.split('.');
@@ -10,40 +10,41 @@ function getExtention(fileName) {
   return arrFileName[arrFileName.length - 1];
 }
 
-// AWS S3 Upload Object
+
+//AWS S3 업로드 객체 
 const upload = {
   getUpload: function (path) {
+
+    //해당 S3버킷안에 폴더 위치 지정
     var s3path = 'contents/';
-    // 폴더가 없을 시, 폴더 생성
 
     if (path != '') s3path = path;
 
+    //s3객체를 생성시 버킷의 액세스키와 시크리트 키를 전달한다.
     const s3 = new AWS.S3({
       accessKeyId: process.env.S3_ACCESS_KEY_ID,
       secretAccessKey: process.env.S3_ACCESS_SECRET_KEY,
     });
-    // AWS S3 class에, S3_ACCESS_KEY_ID, S3_ACCESS_SECRET_KEY 전달
 
-    // S3 전용 multer Package 이용해, 저장 처리
+
+    //multerS3 s3전용 멀터 패키지를 이용해 파일 저장처리 
     const storage = multerS3({
       s3: s3,
-      //   접근할 버킷 정보
       bucket: process.env.S3_BUCKET,
       contentType: multerS3.AUTO_CONTENT_TYPE,
       metadata: function (req, file, cb) {
         var ext = getExtention(file.originalname);
+
         cb(null, {
           fieldName: file.fieldname,
-          fileNewName: Date.now().toString() + '.' + ext,
+          fileNewName: Date.now().toString() + '.' + ext,  
           extention: '.' + ext,
         });
       },
       key: function (req, file, cb) {
-        // 파일 업로드시, file 객체로 넘어옴
         cb(
           null,
-          `uploads/${s3path}${Date.now()}.${getExtention(file.originalname)}`
-          //   숫자.ext | S3에 저장될 파일명 | 최종 저장 경로 /uploads/contents/...
+          `uploads/test/${Date.now()}.${getExtention(file.originalname)}`, //S3저장될 파일명형식지정하기 /uploads/contents/...
         );
       },
     });
