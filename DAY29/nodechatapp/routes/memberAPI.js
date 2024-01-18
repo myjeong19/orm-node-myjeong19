@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
 var jwt = require('jsonwebtoken');
-
 var bcrypt = require('bcryptjs');
 var AES = require('mysql-aes');
 var db = require('../models/index.js');

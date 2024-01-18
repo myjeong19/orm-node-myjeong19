@@ -121,8 +121,6 @@
           type: 'POST',
           data: member,
           success: result => {
-            console.log('회원로그인 결과값 확인:', result);
-
             switch (result.code) {
               case 200:
                 localStorage.setItem('userauthtoken', result.data);

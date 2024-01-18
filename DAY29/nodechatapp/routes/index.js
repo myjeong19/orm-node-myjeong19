@@ -63,9 +63,23 @@ router.post('/login', async (req, res, next) => {
   } else {
     //단방향 암호된 값을 비교해 동일암호 검증하기
     //result값은 불린형으로 전달된다 true or false
-    const result = await bcrypt.compare(password, member.member_password);
-    if (result) {
-      res.redirect('/chat');
+    const passwordResult = await bcrypt.compare(
+      password,
+      member.member_password
+    );
+    if (passwordResult) {
+      const sesionLoginData = {
+        admin_member_id: member.admin_member_id,
+        company_code: member.company_code,
+        admin_id: member.admin_id,
+        admin_name: member.admin_name,
+      };
+
+      req.session.loginUser = sesionLoginData;
+
+      req.session.save(() => {
+        res.redirect('/');
+      });
     } else {
       resultMsg = '사용자 암호가 일치하지 않습니다.';
       res.render('login.ejs', { resultMsg });
