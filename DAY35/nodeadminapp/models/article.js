@@ -1,6 +1,6 @@
-
 module.exports = function(sequelize,DataTypes){
-    return sequelize.define('article',{
+    return sequelize.define('article',
+    {
         article_id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
@@ -14,9 +14,9 @@ module.exports = function(sequelize,DataTypes){
             comment: '게시판고유번호 1:공지사항게시판,2:일반사용자 게시판',
         },
         title: {
-          type: DataTypes.STRING(200),
-          allowNull: false,
-          comment: '글제목',
+            type: DataTypes.STRING(200),
+            allowNull: false,
+            comment: '글제목',
         },
         article_type_code: {
             type: DataTypes.INTEGER,
@@ -68,15 +68,14 @@ module.exports = function(sequelize,DataTypes){
         sequelize,
         tableName: 'article', //기본 테이블명 옵션이 복수형이 아닌 여기 지정한 테이블명으로 생성됨
         timestamps: false,
-        comment: '게시글정보테이블',
+        comment: '게시글정보',
         indexes: [
-          {
-            name: 'PRIMARY',
-            unique: true,
-            using: 'BTREE',
-            fields: [{ name: 'article_id' }],//여러개의 컬럼이 프라이머리키인경우(복합키){}추가하여 설정가능
-          },
+            {
+                name: 'PRIMARY',
+                unique: true,
+                using: 'BTREE',
+                fields: [{ name: 'article_id' }],  //여러개의 컬럼이 프라이머리 키인 경우(복합키) {}추가하여 설정가능
+            },
         ],
-    }
- );
+    });
 }
