@@ -1,12 +1,8 @@
 const express = require('express');
 const router = express.Router();
-
 const bcrypt = require('bcryptjs');
-
 const passport = require('passport');
-
 const { isLoggedIn, isNotLoggedIn } = require('./passportMiddleware');
-
 const db = require('../models/index');
 
 router.get('/', isLoggedIn, async (req, res, next) => {
@@ -42,7 +38,6 @@ router.post('/login', async (req, res, next) => {
       };
 
       req.session.loginUser = sessionLoginData;
-
       req.session.isLogined = true;
 
       req.session.save(function () {
@@ -56,6 +51,7 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.post('/passportLogin', async (req, res, next) => {
+  // 자동으로 localStrategy로 넘어감
   passport.authenticate('local', (authError, admin, info) => {
     if (authError) {
       console.log(authError);

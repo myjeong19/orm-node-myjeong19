@@ -1,5 +1,5 @@
 exports.isLoggedIn = (req, res, next) => {
-  if (req.session.loginUser != undefined) {
+  if (!req.session.loginUser) {
     next();
   } else {
     res.redirect('/login');
@@ -7,7 +7,7 @@ exports.isLoggedIn = (req, res, next) => {
 };
 
 exports.isNotLoggedIn = (req, res, next) => {
-  if (req.session.loginUser == undefined) {
+  if (req.session.loginUser) {
     next();
   } else {
     res.redirect('/');

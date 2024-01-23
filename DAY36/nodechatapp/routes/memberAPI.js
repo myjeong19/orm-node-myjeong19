@@ -4,8 +4,12 @@ var bcrypt = require('bcryptjs');
 var AES = require('mysql-aes');
 var jwt = require('jsonwebtoken');
 var db = require('../models/index');
+require('dotenv').config();
 
 var { tokenAuthChecking } = require('./apiMiddleware.js');
+
+//! 각종 열거형 상수 - 코드성 데이터 참조
+const constants = require('../common/enum.js');
 
 router.post('/entry', async (req, res, next) => {
   var apiResult = {
@@ -15,27 +19,24 @@ router.post('/entry', async (req, res, next) => {
   };
 
   try {
-    var email = req.body.email;
-    var password = req.body.password;
-    var name = req.body.name;
-    var telephone = req.body.telephone;
+    const { email, password, name, telephone } = req.body;
 
-    var existMember = await db.Member.findOne({ where: { email } });
+    const getExistMember = await db.Member.findOne({ where: { email } });
 
-    if (existMember != null) {
+    if (getExistMember != null) {
       apiResult.code = 500;
       apiResult.data = null;
       apiResult.msg = 'ExistDoubleEmail';
     } else {
+      const encrypteEmail = AES.encrypt(email, process.env.MYSQL_AES_KEY);
       var encryptedPassword = await bcrypt.hash(password, 12);
-
       var encryptedTelephone = AES.encrypt(
         telephone,
         process.env.MYSQL_AES_KEY
       );
 
       var member = {
-        email,
+        email: encrypteEmail,
         member_password: encryptedPassword,
         name,
         profile_img_path: '',
@@ -80,44 +81,43 @@ router.post('/login', async (req, res, next) => {
     var email = req.body.email;
     var password = req.body.password;
 
-    var member = await db.Member.findOne({ where: { email: email } });
+    const encrypteEmail = AES.encrypt(email, process.env.MYSQL_AES_KEY);
+    const getMember = await db.Member.findOne({
+      where: { email: encrypteEmail },
+    });
+    let resultMsg = '';
 
-    var resultMsg = '';
-
-    if (member == null) {
+    if (getMember == null) {
       resultMsg = 'not exist email';
-
       apiResult.code = 400;
       apiResult.data = null;
       apiResult.msg = resultMsg;
     } else {
       var compareResult = await bcrypt.compare(
         password,
-        member.member_password
+        getMember.member_password
       );
 
       if (compareResult) {
         resultMsg = 'login ok';
-
-        member.member_password = '';
-
-        member.telephone = AES.decrypt(
-          member.telephone,
+        getMember.member_password = '';
+        getMember.telephone = AES.decrypt(
+          getMember.telephone,
           process.env.MYSQL_AES_KEY
         );
 
         var memberTokenData = {
-          member_id: member.member_id,
-          email: member.email,
-          name: member.name,
-          profile_img_path: member.profile_img_path,
-          telephone: member.telephone,
+          member_id: getMember.member_id,
+          email: getMember.email,
+          name: getMember.name,
+          profile_img_path: getMember.profile_img_path,
+          telephone: getMember.telephone,
           etc: '기타정보',
         };
 
         var token = await jwt.sign(memberTokenData, process.env.JWT_SECRET, {
           expiresIn: '24h',
-          issuer: 'msoftware',
+          issuer: 'myjeong19',
         });
 
         apiResult.code = 200;
@@ -125,7 +125,6 @@ router.post('/login', async (req, res, next) => {
         apiResult.msg = resultMsg;
       } else {
         resultMsg = 'not correct password';
-
         apiResult.code = 400;
         apiResult.data = null;
         apiResult.msg = resultMsg;
@@ -158,7 +157,6 @@ router.get('/profile', tokenAuthChecking, async (req, res, next) => {
 
     var tokenJsonData = await jwt.verify(token, process.env.JWT_SECRET);
     var loginMemberId = tokenJsonData.member_id;
-    var loginMemberEmail = tokenJsonData.email;
 
     var dbMember = await db.Member.findOne({
       where: { member_id: loginMemberId },
@@ -170,6 +168,8 @@ router.get('/profile', tokenAuthChecking, async (req, res, next) => {
         'birth_date',
       ],
     });
+
+    dbMember.email = AES.decrypt(dbMember.email, process.env.MYSQL_AES_KEY);
 
     dbMember.telephone = AES.decrypt(
       dbMember.telephone,
@@ -183,6 +183,43 @@ router.get('/profile', tokenAuthChecking, async (req, res, next) => {
     apiResult.code = 500;
     apiResult.data = null;
     apiResult.msg = 'falied';
+  }
+
+  res.json(apiResult);
+});
+
+/**
+ * *TODO
+ * GET
+ * 전체 회원 목록 조회
+ */
+
+router.get('/all', tokenAuthChecking, async (req, res) => {
+  var apiResult = {
+    code: 400,
+    data: null,
+    msg: '',
+  };
+
+  try {
+    var members = await db.Member.findAll({
+      attributes: [
+        'member_id',
+        'email',
+        'name',
+        'profile_img_path',
+        'telephone',
+      ],
+      where: { use_state_code: constants.USE_STATE_CODE_USED },
+    });
+
+    apiResult.code = 200;
+    apiResult.data = members;
+    apiResult.msg = 'Ok';
+  } catch (err) {
+    apiResult.code = 500;
+    apiResult.data = null;
+    apiResult.msg = 'Failed';
   }
 
   res.json(apiResult);

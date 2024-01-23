@@ -15,5 +15,8 @@ const sequelize = new Sequelize(
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 db.Member = require('./member.js')(sequelize, Sequelize);
+db.Channel = require('./channel.js')(sequelize, Sequelize);
+db.ChannelMember = require('./channelMember.js')(sequelize, Sequelize);
+db.ChannelMsg = require('./message.js')(sequelize, Sequelize);
 
 module.exports = db;
