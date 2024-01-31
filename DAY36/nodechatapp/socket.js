@@ -2,6 +2,7 @@ const SocketIO = require('socket.io');
 
 const moment = require('moment');
 const jwt = require('jsonwebtoken');
+const redis = require('socket.io-redis');
 
 //DB객체 참조하기
 var db = require('./models/index');
@@ -14,6 +15,13 @@ module.exports = server => {
       methods: ['GET', 'POST'],
     },
   });
+
+  io.adapter(
+    redis({
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT,
+    })
+  );
 
   io.on('connection', async socket => {
     //소켓Req객체
